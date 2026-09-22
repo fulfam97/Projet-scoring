@@ -1,1 +1,13 @@
 .venv
+# Fichiers de données et bases
+*.sas7bdat
+*.sas7bdat.gz
+*.parquet
+*.csv
+*.tsv
+*.zip
+*.tar.gz
+
+# Bases de données relationnelles locales
+*.db
+*.sqlite3
