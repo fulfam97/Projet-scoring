@@ -29,6 +29,15 @@ explicite avant d'implémenter une étape donnée. Utiliser la terminologie du
 cours telle quelle (WOE, IV, CHR, LRA, PDO, MoC...) plutôt que d'improviser
 un vocabulaire différent.
 
+Le projet utilise **polars** (pas pandas) comme librairie de manipulation de
+données dans tout le code `utils/` et les notebooks.
+
+Avant d'écrire directement dans un fichier `.py` de `utils/`, proposer le
+contenu (les fonctions) sous forme de cellules de code séparées dans la
+conversation, pour relecture/validation. Idem pour les cellules de notebook :
+les proposer dans la conversation, ne jamais éditer les `.ipynb` directement, sauf lorsque demandé.
+Écrire dans les fichiers seulement après validation explicite.
+
 ## Architecture du projet
 
 ```
@@ -40,18 +49,19 @@ Projet-scoring/
 │   └── processed/                 # jamais lu par l'agent (données réelles)
 ├── utils/
 │   ├── segmentation.py            # découpage amont de la population
-│   ├── exploration.py             # associations et redondances (ch. 3)
-│   ├── binning.py                 # discrétisation, WOE/IV (ch. 4)
-│   ├── modele.py                  # régression logistique, modèle concurrent, sélection (ch. 5)
-│   ├── scorecard.py               # score → points, PDO (ch. 6)
-│   ├── chr.py                     # mise en classe, CHR (ch. 7)
-│   └── calibrage.py               # calibrage, LRA, MoC (ch. 8)
+│   ├── exploration.py             # associations et redondances 
+│   ├── binning.py                 # discrétisation, WOE/IV 
+│   ├── modele.py                  # régression logistique, modèle concurrent, sélection 
+│   ├── scorecard.py               # score → points, PDO 
+│   ├── chr.py                     # mise en classe, CHR 
+│   └── calibrage.py               # calibrage, LRA, MoC 
 ├── outputs/
 │   ├── figures/
 │   └── scorecard/
-├── 00_segmentation_exploration.ipynb
-├── 01_differenciation.ipynb       
-└── 02_calibration.ipynb           
+├── 0 - Segmentation_exploration.ipynb
+├── 0b - Stats_descriptives.ipynb
+├── 1 - Differenciation.ipynb       
+└── 2 - Calibration.ipynb           
 ```
 
 Principe : les notebooks sont des rapports lisibles (texte, graphiques,

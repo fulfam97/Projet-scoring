@@ -1,0 +1,9 @@
+polars
+pandas
+pyarrow
+numpy
+scipy
+statsmodels
+scikit-learn
+xlsxwriter
+ipykernel
