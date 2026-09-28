@@ -164,6 +164,7 @@ def plot_iv_by_segment_and_family(
     ax.set_yticklabels(labels_axe, fontsize=9.5)
     ax.invert_yaxis()
     
+
     ax.set_xlabel("Information Value (IV)", fontsize=11, fontweight="bold")
     ax.set_title(f"Pouvoir discriminant (IV) par famille : {seg_a} vs {seg_b}", fontsize=13, pad=15)
     ax.grid(axis="x", linestyle=":", alpha=0.6)
