@@ -135,35 +135,3 @@ def risk_rate_over_time(df: pl.DataFrame, var: str, target: str, date: str) -> p
     )
     return out.select(date, *sorted(c for c in out.columns if c != date))
 
-
-def split_train_test_oot(df: pl.DataFrame, id_col: str,
-    date_col: str, target: str, date_oot, segment: str | None = None, test_share: float = 0.2, seed: int = 42) -> tuple[pl.DataFrame, pl.DataFrame]:
-    """Découpe la base en 'train', 'test' et 'oot'.
-    - 'oot' : observations avec date_col >= date_oot ;
-    - 'train' / 'test' : tirage au niveau id_col (aucun dossier des deux côtés),
-      stratifié par (segment, target) sur la période hors OOT."""
-    rng = np.random.default_rng(seed)
-    hors_oot = df.filter(pl.col(date_col) < date_oot)
-    ids = (hors_oot.group_by(id_col)
-        .agg(_y=pl.col(target).max(),_seg=pl.col(segment).first() if segment else pl.lit("global"))
-        .sort(id_col))
-    ids = (ids.with_columns(_u=rng.random(ids.height))
-        .with_columns(
-            split=pl.when(
-                pl.col("_u").rank("ordinal").over("_seg", "_y")
-                <= (pl.len().over("_seg", "_y") * test_share)
-            ).then(pl.lit("test")).otherwise(pl.lit("train"))
-        ).select(id_col, "split"))
-
-    out = (df.drop("split", strict=False)
-        .join(ids, on=id_col, how="left")
-        .with_columns(split=pl.when(pl.col(date_col) >= date_oot)
-            .then(pl.lit("oot")).otherwise(pl.col("split"))))
-
-    cles = ([segment] if segment else []) + ["split"]
-    bilan = (out.group_by(cles).agg(n=pl.len(), n_id=pl.col(id_col).n_unique(), n_defaut=pl.col(target).sum(),
-            taux_defaut=pl.col(target).mean())
-        .with_columns(part=pl.col("n") / pl.col("n").sum().over(segment)
-            if segment else pl.col("n") / out.height
-        ).sort(cles))
-    return out, bilan
