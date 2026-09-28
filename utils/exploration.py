@@ -128,6 +128,25 @@ def risk_rate_by_modality(df: pl.DataFrame, var: str, target: str) -> pl.DataFra
     )
 
 
+def risk_rate_by_modality_over_time(
+    df: pl.DataFrame,
+    date: str,
+    var: str,
+    target: str
+) -> pl.DataFrame:
+
+    return (
+        df.group_by([date, var])
+        .agg(
+            n=pl.len(),
+            n_defaut=pl.col(target).sum()
+        )
+        .with_columns(
+            (pl.col("n_defaut") / pl.col("n")).alias("taux_defaut")
+        )
+        .sort([date, var])
+    )
+
 def chi2_association(df: pl.DataFrame, var: str, target: str) -> dict:
     """Test du Chi2 d'indépendance entre une variable qualitative et la cible + V de Cramer (ch. 3.2)."""
     sub = df.select(pl.col(var).cast(pl.String), pl.col(target)).drop_nulls(target)
