@@ -23,6 +23,17 @@ def _classes(df: pl.DataFrame, var: str, n_bins: int, max_modalites: int) -> pl.
         pl.col("q").struct.field("breakpoint").alias("ordre"),
     )
 
+def woe_encode(df: pl.DataFrame, variables: list[str], target: str, n_bins: int = 10,
+               max_modalites: int = 10) -> pl.DataFrame:
+    """Remplace chaque variable par la WOE de sa classe (découpage fin, missing = classe à part)."""
+    cols = []
+    for v in variables:
+        table = woe_iv_table(df, v, target, n_bins, max_modalites).select("classe", "woe")
+        classes = _classes(df, v, n_bins, max_modalites).select("classe")
+        cols.append(classes.join(table, on="classe", how="left", maintain_order="left")["woe"].alias(v))
+    return pl.DataFrame(cols)
+
+
 def woe_iv_table(df: pl.DataFrame, var: str, target: str, n_bins: int = 10, max_modalites: int = 10) -> pl.DataFrame:
     """Table WOE/IV d'une variable : WOE = ln(%bons / %mauvais), lissage 0,5 pour les classes pures."""
     d = _classes(df, var, n_bins, max_modalites).with_columns(df[target].alias("y"))
