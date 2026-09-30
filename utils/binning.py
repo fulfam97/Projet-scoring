@@ -81,3 +81,40 @@ def iv_by_segment(df: pl.DataFrame, variables: list[str], target: str, segment: 
     for p in parts[1:]:
         out = out.join(p, on="variable")
     return out.sort(out.columns[1], descending=True)
+
+    
+def comparer_woe_groupes(df: pl.DataFrame, variables: list[str], target: str, groupe: str,
+                         n_bins: int = 10, max_modalites: int = 10, min_n: int = 500) -> tuple[pl.DataFrame, pl.DataFrame]:
+    """Mêmes classes pour tous (découpage fin sur l'ensemble), WOE calculée séparément dans chaque groupe.
+    Une variable est bien alignée si ses WOE sont proches d'un groupe à l'autre.
+    Renvoie (detail par classe et groupe, synthèse par variable : écart max de WOE sur les classes d'au moins min_n dossiers)."""
+    details = []
+    for v in variables:
+        d = _classes(df, v, n_bins, max_modalites).with_columns(df[target].alias("y"), df[groupe].cast(pl.String).alias("groupe"))
+        t = (
+            d.group_by("groupe", "classe")
+            .agg(ordre=pl.col("ordre").min(), n=pl.len(), n_defaut=pl.col("y").sum())
+            .with_columns(n_sain=pl.col("n") - pl.col("n_defaut"))
+            .with_columns(
+                dist_bad=(pl.col("n_defaut") + 0.5) / (pl.col("n_defaut").sum().over("groupe") + 0.5),
+                dist_good=(pl.col("n_sain") + 0.5) / (pl.col("n_sain").sum().over("groupe") + 0.5),
+            )
+            .with_columns(woe=(pl.col("dist_good") / pl.col("dist_bad")).log(),
+                          taux_defaut=pl.col("n_defaut") / pl.col("n"))
+            .select(pl.lit(v).alias("variable"), "groupe", "classe", "ordre", "n", "n_defaut", "taux_defaut", "woe")
+        )
+        details.append(t)
+    detail = pl.concat(details).sort("variable", "ordre", "groupe", nulls_last=True)
+
+    synthese = (
+        detail.filter(pl.col("n") >= min_n)
+        .group_by("variable", "classe")
+        .agg(n_groupes=pl.len(), ecart_woe=pl.col("woe").max() - pl.col("woe").min())
+        .filter(pl.col("n_groupes") > 1)
+        .group_by("variable")
+        .agg(ecart_woe_max=pl.col("ecart_woe").max(), ecart_woe_moyen=pl.col("ecart_woe").mean(),
+             n_classes_comparees=pl.len())
+        .sort("ecart_woe_max", descending=True)
+    )
+    return detail, synthese
+
