@@ -12,3 +12,13 @@
 # Bases de données relationnelles locales
 *.db
 *.sqlite3
+
+
+__pycache__/
+*.py[cod]
+data/raw/
+data/processed/
+data/segments/
+*.parquet
+.DS_Store
+

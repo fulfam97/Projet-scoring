@@ -204,9 +204,10 @@ SUFFIXES_JOINTS = ("_min", "_max", "_med")
 
 
 def unifier_joints(df: pl.DataFrame, tronques: dict[str, str] | None = None,
-                   max_seul: tuple[str, ...] = ()) -> tuple[pl.DataFrame, dict]:
+                   max_seul: tuple[str, ...] = (), garder_min_max: bool = False) -> tuple[pl.DataFrame, dict]:
     """Remplit chaque variable individuelle par sa version _med (dossiers joints), ou _max pour les codes
-    listés dans max_seul ; supprime les colonnes _min/_max/_med traitées.
+    listés dans max_seul ; supprime les colonnes _med traitées (devenues redondantes), et les _min/_max
+    sauf si garder_min_max (écart entre titulaires, exploitable dans le segment multi-détenus).
     tronques : racine tronquée par SAS (32 car.) -> nom de la variable de base."""
     tronques = tronques or {}
     racines = sorted({c.rsplit("_", 1)[0] for c in df.columns if c.endswith(SUFFIXES_JOINTS)})
@@ -217,7 +218,8 @@ def unifier_joints(df: pl.DataFrame, tronques: dict[str, str] | None = None,
     exprs = [pl.coalesce(b, f"{r}_med").alias(b) for r, b in par_med.items()]
     exprs += [pl.coalesce([b, f"{r}_max"] if b in df.columns else [f"{r}_max"]).alias(b) for r, b in par_max.items()]
     traitees = par_med | par_max
-    a_supprimer = [f"{r}{s}" for r in traitees for s in SUFFIXES_JOINTS if f"{r}{s}" in df.columns]
+    suffixes = ("_med",) if garder_min_max else SUFFIXES_JOINTS
+    a_supprimer = [f"{r}{s}" for r in traitees for s in suffixes if f"{r}{s}" in df.columns]
 
     rapport = {
         "unifiees_med": len(par_med),
@@ -328,4 +330,54 @@ def exporter_excel(feuilles: dict[str, pl.DataFrame], chemin) -> None:
     Path(chemin).parent.mkdir(parents=True, exist_ok=True)
     with xlsxwriter.Workbook(chemin) as wb:
         for nom, t in feuilles.items():
-            t.write_excel(workbook=wb, worksheet=nom[:31], autofit=True)
+            t.with_columns(pl.col(pl.Float32, pl.Float64).fill_nan(None)).write_excel(
+                workbook=wb, worksheet=nom[:31], autofit=True)
+
+
+FENETRES_ARR_RECENTES = ["NBJ_ARR_SS_max_Mm1_Mm3", "NBJ_ARR_SS_max_Mm4_Mm6", "NBJ_ARR_SS_max_Mm7_Mm9",
+                         "NBJ_ARR_SS_max_Mm10_Mm12"]
+FENETRES_ARR_ANCIENNES = ["NBJ_ARR_SS_max_Mm13_Mm18", "NBJ_ARR_SS_max_Mm19_Mm24", "NBJ_ARR_SS_max_Mm25_Mm36",
+                          "NBJ_ARR_SS_max_Mm37_Mm48"]
+
+
+def variables_arrieres(df: pl.DataFrame, recentes: list[str] = FENETRES_ARR_RECENTES,
+                       anciennes: list[str] = FENETRES_ARR_ANCIENNES) -> pl.DataFrame:
+    """Feature engineering (2.4) sur l'historique d'arriérés : synthèse des fenêtres successives.
+    Une fenêtre manquante (historique indisponible) n'est pas comptée comme sans arriéré ;
+    les variables valent null si toutes les fenêtres concernées sont manquantes."""
+    fenetres = recentes + anciennes
+    toutes_null = pl.all_horizontal(pl.col(fenetres).is_null())
+
+    def avec_arr(cols):
+        return pl.any_horizontal(pl.col(cols).fill_null(0) > 0)
+
+    return df.with_columns(
+        NB_FENETRES_ARR=pl.when(toutes_null).then(None)
+        .otherwise(pl.sum_horizontal((pl.col(fenetres).fill_null(0) > 0).cast(pl.Int8))),
+        NBJ_ARR_MAX_12M=pl.max_horizontal(recentes),
+        NBJ_ARR_MAX_13_48M=pl.max_horizontal(anciennes),
+        ARR_TENDANCE=pl.when(toutes_null).then(None)
+        .when(avec_arr(recentes) & avec_arr(anciennes)).then(pl.lit("recurrent"))
+        .when(avec_arr(recentes)).then(pl.lit("recent_seul"))
+        .when(avec_arr(anciennes)).then(pl.lit("ancien_seul"))
+        .otherwise(pl.lit("aucun")),
+    )
+
+def taux_utilisation_decouvert(df: pl.DataFrame, solde: str = "solde_debiteur", autorisation: str = "engagement_DAV",
+                               sans_autorisation: float = 1e6) -> pl.DataFrame:
+    """Feature engineering (2.4) : part du découvert autorisé effectivement utilisée (solde débiteur ≤ 0).
+    0 = pas de débit ; débit sans autorisation = valeur sentinelle `sans_autorisation` (classe extrême du binning)."""
+    debit = -pl.col(solde).clip(upper_bound=0)
+    return df.with_columns(
+        TX_UTIL_DAV=pl.when(pl.col(solde).is_null() | pl.col(autorisation).is_null()).then(None)
+        .when(debit == 0).then(0.0)
+        .when(pl.col(autorisation) > 0).then(debit / pl.col(autorisation))
+        .otherwise(sans_autorisation)
+    )
+
+def neutraliser_valeurs(df: pl.DataFrame, regles: dict[str, pl.Expr]) -> pl.DataFrame:
+    """Valeurs impossibles (2.3) mises à null : {variable: condition d'impossibilité}.
+    Les conditions sont évaluées sur les valeurs d'origine ; la valeur devient un missing, traité au binning."""
+    return df.with_columns(
+        pl.when(expr.fill_null(False)).then(None).otherwise(pl.col(v)).alias(v) for v, expr in regles.items()
+    )

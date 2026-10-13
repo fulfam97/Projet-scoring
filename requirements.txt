@@ -7,3 +7,6 @@ statsmodels
 scikit-learn
 xlsxwriter
 ipykernel
+matplotlib
+xgboost
+fastexcel
