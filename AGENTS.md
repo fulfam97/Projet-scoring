@@ -68,7 +68,7 @@ Principe : les notebooks sont des rapports lisibles (texte, graphiques,
 justification des décisions) qui appellent les fonctions des `.py` — pas de
 logique lourde directement dans les cellules.
 
-## Plan complet du cours (référence exhaustive)
+## Plan complet du cours 
 
 ### Introduction — Usages et finalités du score
 - Qu'est-ce qu'un score, à quoi ça sert
