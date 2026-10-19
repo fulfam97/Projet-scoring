@@ -92,6 +92,18 @@ def ordre_risque(df: pl.DataFrame, var: str, regle: dict, target: str) -> list[s
     d = appliquer_regle(df, var, regle).with_columns(df[target].alias("y"))
     return d.group_by("classe").agg(pl.col("y").mean()).sort(["y", "classe"])["classe"].to_list()
 
+def rattacher_missing_absent(regles: dict[str, dict], df: pl.DataFrame, target: str) -> tuple[dict[str, dict], list[str]]:
+    """Variables sans valeur manquante dans l'apprentissage (`df`) : aucune classe « missing » n'a pu y être
+    estimée. Par prudence, un manquant rencontré plus tard (test, OOT, production) est rattaché à la classe
+    la plus risquée de la variable. Renvoie les règles complétées et la liste des variables concernées."""
+    nouvelles, concernees = dict(regles), []
+    for v, r in regles.items():
+        if r.get("missing") is None and v in df.columns and df[v].null_count() == 0:
+            pire = ordre_risque(df, v, r, target)[-1]
+            nouvelles[v] = r | {"missing": pire}
+            concernees.append(v)
+    return nouvelles, concernees
+
 
 def matrice_indicatrices(df: pl.DataFrame, variables: list[str], regles: dict[str, dict],
                          ordres: dict[str, list[str]]) -> tuple[np.ndarray, list[str], dict[str, list[int]]]:
