@@ -1,0 +1,13 @@
+{
+  "chr": {
+    "type": "num",
+    "bornes": [
+      571.0,
+      602.0,
+      621.0,
+      668.0
+    ],
+    "missing": null,
+    "methode": "quantiles + regroupement"
+  }
+}
