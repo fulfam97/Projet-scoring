@@ -1,0 +1,137 @@
+{
+ "variables": [
+  "MINSOLDE_PAR",
+  "CRTAD_AG_NBJDE_BA",
+  "ENCOURS_PAR",
+  "CAUSE_SAIN_M0",
+  "SOLDE_RATIO_T_vs_HIST",
+  "ANCIENNETE_modif",
+  "NBECR_EVOLUTION_A_vs_A1",
+  "NBJ_ARR_SS_max_Mm1_Mm3"
+ ],
+ "fusions": {
+  "SOLDE_RATIO_T_vs_HIST": {
+   "1": 1,
+   "2": 2,
+   "3": 2
+  },
+  "ANCIENNETE_modif": {
+   "1": 1,
+   "2": 1,
+   "3": 2
+  }
+ },
+ "beta0": -8.439345122716059,
+ "coefficients": [
+  {
+   "variable": "MINSOLDE_PAR",
+   "classe": 1,
+   "beta": 0.0
+  },
+  {
+   "variable": "MINSOLDE_PAR",
+   "classe": 2,
+   "beta": 0.9535926505461383
+  },
+  {
+   "variable": "MINSOLDE_PAR",
+   "classe": 3,
+   "beta": 0.9843059782286336
+  },
+  {
+   "variable": "MINSOLDE_PAR",
+   "classe": 4,
+   "beta": 1.3677137939492376
+  },
+  {
+   "variable": "CRTAD_AG_NBJDE_BA",
+   "classe": 1,
+   "beta": 0.0
+  },
+  {
+   "variable": "CRTAD_AG_NBJDE_BA",
+   "classe": 2,
+   "beta": 0.7870499112603465
+  },
+  {
+   "variable": "CRTAD_AG_NBJDE_BA",
+   "classe": 3,
+   "beta": 1.2582071924168001
+  },
+  {
+   "variable": "CRTAD_AG_NBJDE_BA",
+   "classe": 4,
+   "beta": 1.703169738855733
+  },
+  {
+   "variable": "CRTAD_AG_NBJDE_BA",
+   "classe": 5,
+   "beta": 1.7654161842758547
+  },
+  {
+   "variable": "ENCOURS_PAR",
+   "classe": 1,
+   "beta": 0.0
+  },
+  {
+   "variable": "ENCOURS_PAR",
+   "classe": 2,
+   "beta": 1.3226210283060948
+  },
+  {
+   "variable": "CAUSE_SAIN_M0",
+   "classe": 1,
+   "beta": 0.0
+  },
+  {
+   "variable": "CAUSE_SAIN_M0",
+   "classe": 2,
+   "beta": 2.041914562793389
+  },
+  {
+   "variable": "SOLDE_RATIO_T_vs_HIST",
+   "classe": 1,
+   "beta": 0.0
+  },
+  {
+   "variable": "SOLDE_RATIO_T_vs_HIST",
+   "classe": 2,
+   "beta": 0.32988666854248344
+  },
+  {
+   "variable": "ANCIENNETE_modif",
+   "classe": 1,
+   "beta": 0.0
+  },
+  {
+   "variable": "ANCIENNETE_modif",
+   "classe": 2,
+   "beta": 0.6827858531135115
+  },
+  {
+   "variable": "NBECR_EVOLUTION_A_vs_A1",
+   "classe": 1,
+   "beta": 0.0
+  },
+  {
+   "variable": "NBECR_EVOLUTION_A_vs_A1",
+   "classe": 2,
+   "beta": 0.5501753831204399
+  },
+  {
+   "variable": "NBECR_EVOLUTION_A_vs_A1",
+   "classe": 3,
+   "beta": 0.6281206258005019
+  },
+  {
+   "variable": "NBJ_ARR_SS_max_Mm1_Mm3",
+   "classe": 1,
+   "beta": 0.0
+  },
+  {
+   "variable": "NBJ_ARR_SS_max_Mm1_Mm3",
+   "classe": 2,
+   "beta": 1.1092362713660193
+  }
+ ]
+}

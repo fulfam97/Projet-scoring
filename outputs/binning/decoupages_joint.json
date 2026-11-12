@@ -1,0 +1,633 @@
+{
+ "MINSOLDE_PAR": {
+  "variable": "MINSOLDE_PAR",
+  "nature": "numerique",
+  "sens": -1,
+  "n_classes_fin": 20,
+  "missing_isole": false,
+  "classe_missing": 4,
+  "bornes": [
+   -1167.0,
+   12500.0,
+   35333.0
+  ],
+  "classes": [
+   4,
+   3,
+   2,
+   1
+  ]
+ },
+ "CRTAD_AG_NBJDE_BA": {
+  "variable": "CRTAD_AG_NBJDE_BA",
+  "nature": "numerique",
+  "sens": 1,
+  "n_classes_fin": 12,
+  "missing_isole": false,
+  "classe_missing": 5,
+  "bornes": [
+   6.0,
+   64.0,
+   230.0,
+   348.0
+  ],
+  "classes": [
+   1,
+   2,
+   3,
+   4,
+   5
+  ]
+ },
+ "solde_crediteur": {
+  "variable": "solde_crediteur",
+  "nature": "numerique",
+  "sens": -1,
+  "n_classes_fin": 20,
+  "missing_isole": false,
+  "classe_missing": 3,
+  "bornes": [
+   1769.0,
+   9737.0
+  ],
+  "classes": [
+   3,
+   2,
+   1
+  ]
+ },
+ "CRTAD_IND_0015": {
+  "variable": "CRTAD_IND_0015",
+  "nature": "numerique",
+  "sens": 1,
+  "n_classes_fin": 7,
+  "missing_isole": false,
+  "classe_missing": 4,
+  "bornes": [
+   0.0,
+   15.5,
+   26.0
+  ],
+  "classes": [
+   1,
+   2,
+   3,
+   4
+  ]
+ },
+ "ENCOURS_PAR": {
+  "variable": "ENCOURS_PAR",
+  "nature": "numerique",
+  "sens": -1,
+  "n_classes_fin": 17,
+  "missing_isole": false,
+  "classe_missing": 2,
+  "bornes": [
+   15500.0
+  ],
+  "classes": [
+   2,
+   1
+  ]
+ },
+ "RATIO_NBJDEB_NONAUTO_SUR_NBJDEB": {
+  "variable": "RATIO_NBJDEB_NONAUTO_SUR_NBJDEB",
+  "nature": "numerique",
+  "sens": 1,
+  "n_classes_fin": 13,
+  "missing_isole": true,
+  "classe_missing": 1,
+  "bornes": [],
+  "classes": [
+   2
+  ]
+ },
+ "ARR_GDT": {
+  "variable": "ARR_GDT",
+  "nature": "numerique",
+  "sens": 1,
+  "n_classes_fin": 2,
+  "missing_isole": false,
+  "classe_missing": 2,
+  "bornes": [
+   0.0
+  ],
+  "classes": [
+   1,
+   2
+  ]
+ },
+ "NBJDE_RATIO_A_vs_A1": {
+  "variable": "NBJDE_RATIO_A_vs_A1",
+  "nature": "numerique",
+  "sens": 1,
+  "n_classes_fin": 18,
+  "missing_isole": true,
+  "classe_missing": 1,
+  "bornes": [
+   0.375,
+   0.9545454545454546
+  ],
+  "classes": [
+   2,
+   3,
+   4
+  ]
+ },
+ "horsbilan": {
+  "variable": "horsbilan",
+  "nature": "numerique",
+  "sens": -1,
+  "n_classes_fin": 12,
+  "missing_isole": false,
+  "classe_missing": 2,
+  "bornes": [
+   200.0
+  ],
+  "classes": [
+   2,
+   1
+  ]
+ },
+ "RATIO_SOLDE_MOYEN_SUR_EPARGNE": {
+  "variable": "RATIO_SOLDE_MOYEN_SUR_EPARGNE",
+  "nature": "numerique",
+  "sens": -1,
+  "n_classes_fin": 21,
+  "missing_isole": true,
+  "classe_missing": 2,
+  "bornes": [
+   -0.012514755423797331
+  ],
+  "classes": [
+   3,
+   1
+  ]
+ },
+ "CAUSE_SAIN_M0": {
+  "variable": "CAUSE_SAIN_M0",
+  "nature": "qualitative",
+  "sens": 1,
+  "n_classes_fin": 4,
+  "missing_isole": false,
+  "classe_missing": 2,
+  "modalites": {
+   "exception": 1,
+   "eer": 1,
+   "fin de contagion": 2,
+   "retour en sain": 2,
+   "missing": 2
+  },
+  "classe_inconnue": 2
+ },
+ "SOLDE_RATIO_T_vs_HIST": {
+  "variable": "SOLDE_RATIO_T_vs_HIST",
+  "nature": "numerique",
+  "sens": -1,
+  "n_classes_fin": 21,
+  "missing_isole": false,
+  "classe_missing": 2,
+  "bornes": [
+   0.09756104263898498,
+   0.371218070465561
+  ],
+  "classes": [
+   3,
+   2,
+   1
+  ]
+ },
+ "CRTAD_AG_MVTAFF_IND_0010": {
+  "variable": "CRTAD_AG_MVTAFF_IND_0010",
+  "nature": "numerique",
+  "sens": -1,
+  "n_classes_fin": 20,
+  "missing_isole": false,
+  "classe_missing": 4,
+  "bornes": [
+   77374.0,
+   203886.5,
+   419184.0
+  ],
+  "classes": [
+   4,
+   3,
+   2,
+   1
+  ]
+ },
+ "SOLDE_EVOLUTION_T_vs_T1": {
+  "variable": "SOLDE_EVOLUTION_T_vs_T1",
+  "nature": "numerique",
+  "sens": -1,
+  "n_classes_fin": 21,
+  "missing_isole": false,
+  "classe_missing": 2,
+  "bornes": [
+   -0.7167792556539252,
+   -0.27537391304347825
+  ],
+  "classes": [
+   3,
+   2,
+   1
+  ]
+ },
+ "ANCIENNETE_modif": {
+  "variable": "ANCIENNETE_modif",
+  "nature": "numerique",
+  "sens": -1,
+  "n_classes_fin": 20,
+  "missing_isole": false,
+  "classe_missing": 3,
+  "bornes": [
+   168.0,
+   254.0
+  ],
+  "classes": [
+   3,
+   2,
+   1
+  ]
+ },
+ "SOLDE_VOLATILITE_3T": {
+  "variable": "SOLDE_VOLATILITE_3T",
+  "nature": "numerique",
+  "sens": -1,
+  "n_classes_fin": 20,
+  "missing_isole": false,
+  "classe_missing": 4,
+  "bornes": [
+   5008.326400438907,
+   14897.858414326985,
+   77098.53339720542
+  ],
+  "classes": [
+   4,
+   3,
+   2,
+   1
+  ]
+ },
+ "SOLDE_EVOLUTION_T_vs_T4": {
+  "variable": "SOLDE_EVOLUTION_T_vs_T4",
+  "nature": "numerique",
+  "sens": -1,
+  "n_classes_fin": 21,
+  "missing_isole": false,
+  "classe_missing": 1,
+  "bornes": [
+   -0.8444312621445554
+  ],
+  "classes": [
+   2,
+   1
+  ]
+ },
+ "NBJ_ARR_SS_max_Mm13_Mm18": {
+  "variable": "NBJ_ARR_SS_max_Mm13_Mm18",
+  "nature": "numerique",
+  "sens": 1,
+  "n_classes_fin": 3,
+  "missing_isole": true,
+  "classe_missing": 2,
+  "bornes": [
+   0.0
+  ],
+  "classes": [
+   1,
+   3
+  ]
+ },
+ "RATIO_LITIGES_vs_AVOIRS": {
+  "variable": "RATIO_LITIGES_vs_AVOIRS",
+  "nature": "numerique",
+  "sens": 1,
+  "n_classes_fin": 11,
+  "missing_isole": true,
+  "classe_missing": 2,
+  "bornes": [],
+  "classes": [
+   1
+  ]
+ },
+ "RATIO_MOUV_AFF_SUR_EPARGNE": {
+  "variable": "RATIO_MOUV_AFF_SUR_EPARGNE",
+  "nature": "numerique",
+  "sens": 1,
+  "n_classes_fin": 3,
+  "missing_isole": true,
+  "classe_missing": 2,
+  "bornes": [],
+  "classes": [
+   1
+  ]
+ },
+ "NBECR_EVOLUTION_A_vs_A1": {
+  "variable": "NBECR_EVOLUTION_A_vs_A1",
+  "nature": "numerique",
+  "sens": -1,
+  "n_classes_fin": 21,
+  "missing_isole": false,
+  "classe_missing": 2,
+  "bornes": [
+   -0.4340277777777778,
+   -0.2903225806451613
+  ],
+  "classes": [
+   3,
+   2,
+   1
+  ]
+ },
+ "NBJ_ARR_SS_max_Mm7_Mm9": {
+  "variable": "NBJ_ARR_SS_max_Mm7_Mm9",
+  "nature": "numerique",
+  "sens": 1,
+  "n_classes_fin": 3,
+  "missing_isole": false,
+  "classe_missing": 1,
+  "bornes": [
+   0.0
+  ],
+  "classes": [
+   1,
+   2
+  ]
+ },
+ "NBJ_ARR_SS_max_Mm19_Mm24": {
+  "variable": "NBJ_ARR_SS_max_Mm19_Mm24",
+  "nature": "numerique",
+  "sens": 1,
+  "n_classes_fin": 3,
+  "missing_isole": true,
+  "classe_missing": 2,
+  "bornes": [
+   0.0
+  ],
+  "classes": [
+   1,
+   3
+  ]
+ },
+ "NBJ_ARR_SS_max_Mm1_Mm3": {
+  "variable": "NBJ_ARR_SS_max_Mm1_Mm3",
+  "nature": "numerique",
+  "sens": 1,
+  "n_classes_fin": 4,
+  "missing_isole": false,
+  "classe_missing": 1,
+  "bornes": [
+   0.0
+  ],
+  "classes": [
+   1,
+   2
+  ]
+ },
+ "solde_debiteur": {
+  "variable": "solde_debiteur",
+  "nature": "numerique",
+  "sens": -1,
+  "n_classes_fin": 7,
+  "missing_isole": false,
+  "classe_missing": 2,
+  "bornes": [
+   -114.0
+  ],
+  "classes": [
+   2,
+   1
+  ]
+ },
+ "NBJ_ARR_SS_max_Mm37_Mm48": {
+  "variable": "NBJ_ARR_SS_max_Mm37_Mm48",
+  "nature": "numerique",
+  "sens": 1,
+  "n_classes_fin": 3,
+  "missing_isole": true,
+  "classe_missing": 2,
+  "bornes": [
+   0.0
+  ],
+  "classes": [
+   1,
+   3
+  ]
+ },
+ "NBJ_ARR_SS_max_Mm10_Mm12": {
+  "variable": "NBJ_ARR_SS_max_Mm10_Mm12",
+  "nature": "numerique",
+  "sens": 1,
+  "n_classes_fin": 8,
+  "missing_isole": false,
+  "classe_missing": 1,
+  "bornes": [
+   4.0
+  ],
+  "classes": [
+   1,
+   2
+  ]
+ },
+ "NBJ_ARR_SS_max_Mm25_Mm36": {
+  "variable": "NBJ_ARR_SS_max_Mm25_Mm36",
+  "nature": "numerique",
+  "sens": 1,
+  "n_classes_fin": 3,
+  "missing_isole": true,
+  "classe_missing": 2,
+  "bornes": [
+   0.0
+  ],
+  "classes": [
+   1,
+   3
+  ]
+ },
+ "SOLDE_PENTE_5T": {
+  "variable": "SOLDE_PENTE_5T",
+  "nature": "numerique",
+  "sens": -1,
+  "n_classes_fin": 20,
+  "missing_isole": false,
+  "classe_missing": 2,
+  "bornes": [
+   4016.55
+  ],
+  "classes": [
+   2,
+   1
+  ]
+ },
+ "CRTAD_IND_0042": {
+  "variable": "CRTAD_IND_0042",
+  "nature": "numerique",
+  "sens": -1,
+  "n_classes_fin": 20,
+  "missing_isole": false,
+  "classe_missing": 3,
+  "bornes": [
+   2.0,
+   9.0
+  ],
+  "classes": [
+   3,
+   2,
+   1
+  ]
+ },
+ "bilan": {
+  "variable": "bilan",
+  "nature": "numerique",
+  "sens": 1,
+  "n_classes_fin": 11,
+  "missing_isole": false,
+  "classe_missing": 2,
+  "bornes": [
+   5.21
+  ],
+  "classes": [
+   1,
+   2
+  ]
+ },
+ "NBJ_ARR_SS_max_Mm4_Mm6": {
+  "variable": "NBJ_ARR_SS_max_Mm4_Mm6",
+  "nature": "numerique",
+  "sens": 1,
+  "n_classes_fin": 3,
+  "missing_isole": false,
+  "classe_missing": 1,
+  "bornes": [
+   0.0
+  ],
+  "classes": [
+   1,
+   2
+  ]
+ },
+ "SOLDE_PENTE_3T": {
+  "variable": "SOLDE_PENTE_3T",
+  "nature": "numerique",
+  "sens": -1,
+  "n_classes_fin": 20,
+  "missing_isole": false,
+  "classe_missing": 2,
+  "bornes": [
+   3500.0
+  ],
+  "classes": [
+   2,
+   1
+  ]
+ },
+ "anciennete": {
+  "variable": "anciennete",
+  "nature": "qualitative",
+  "sens": 1,
+  "n_classes_fin": 4,
+  "missing_isole": false,
+  "classe_missing": 2,
+  "modalites": {
+   "5ans+": 1,
+   "2-5ans": 2,
+   "1-2ans": 2,
+   "<1an": 2,
+   "missing": 2
+  },
+  "classe_inconnue": 2
+ },
+ "CRTAR_IND_0036": {
+  "variable": "CRTAR_IND_0036",
+  "nature": "numerique",
+  "sens": 1,
+  "n_classes_fin": 6,
+  "missing_isole": false,
+  "classe_missing": 2,
+  "bornes": [
+   161045.0
+  ],
+  "classes": [
+   1,
+   2
+  ]
+ },
+ "seg_anciennete": {
+  "variable": "seg_anciennete",
+  "nature": "qualitative",
+  "sens": 1,
+  "n_classes_fin": 3,
+  "missing_isole": false,
+  "classe_missing": 2,
+  "modalites": {
+   "SB2_ancien": 1,
+   "SA_sans_engagement": 1,
+   "SB1_recent": 2,
+   "missing": 2
+  },
+  "classe_inconnue": 2
+ },
+ "type_credit": {
+  "variable": "type_credit",
+  "nature": "qualitative",
+  "sens": 1,
+  "n_classes_fin": 5,
+  "missing_isole": false,
+  "classe_missing": 2,
+  "modalites": {
+   "3_MLT": 1,
+   "4_autre_engagement": 1,
+   "1_immo": 1,
+   "5_sans_credit": 1,
+   "2_conso": 2,
+   "missing": 2
+  },
+  "classe_inconnue": 2
+ },
+ "nb_credit_perso": {
+  "variable": "nb_credit_perso",
+  "nature": "numerique",
+  "sens": 1,
+  "n_classes_fin": 6,
+  "missing_isole": false,
+  "classe_missing": 2,
+  "bornes": [
+   0.0
+  ],
+  "classes": [
+   1,
+   2
+  ]
+ },
+ "nb_credit_immo__crelog": {
+  "variable": "nb_credit_immo__crelog",
+  "nature": "numerique",
+  "sens": -1,
+  "n_classes_fin": 10,
+  "missing_isole": false,
+  "classe_missing": 2,
+  "bornes": [
+   0.0
+  ],
+  "classes": [
+   2,
+   1
+  ]
+ },
+ "nb_crt_distincts": {
+  "variable": "nb_crt_distincts",
+  "nature": "numerique",
+  "sens": -1,
+  "n_classes_fin": 6,
+  "missing_isole": false,
+  "classe_missing": 2,
+  "bornes": [
+   1.0
+  ],
+  "classes": [
+   2,
+   1
+  ]
+ }
+}

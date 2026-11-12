@@ -281,4 +281,3 @@ def profil_groupes(df: pl.DataFrame, groupe: str, target: str, quanti: list[str]
             for m in df[v].cast(pl.String).drop_nulls().unique().sort().to_list():
                 aggs.append((pl.col(v).cast(pl.String) == m).mean().round(2).alias(f"part {v}={m}"))
     return df.group_by(groupe).agg(aggs).sort(groupe)
-
