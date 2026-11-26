@@ -317,7 +317,8 @@ class ResultatStepwise:
 
 def stepwise_liaison(df_app: pl.DataFrame, candidates: list[str], target: str, df_test: pl.DataFrame | None = None,
                      alpha: float = 0.05, gain_min: float = 0.005, seuil_vif: float = 5, fusion: bool = True,
-                     max_variables: int | None = None) -> ResultatStepwise:
+                     max_variables: int | None = None, fusions_initiales: dict[str, dict[int, int]] | None = None,
+                     fusion_retenues: bool = False) -> ResultatStepwise:
     """Construction pas à pas du cours 5.5.
     Les candidates, déjà ordonnées par IV décroissant, sont ajoutées une à une (toutes leurs modalités à la fois).
     Après chaque ajout, tous les tests de 5.1 sont vérifiés sur le modèle complet :
@@ -327,9 +328,18 @@ def stepwise_liaison(df_app: pl.DataFrame, candidates: list[str], target: str, d
     - si l'ajout rend non conforme une variable déjà retenue, ou dépasse le seuil de VIF, la variable est écartée ;
     - la variable n'est retenue que si son LR test est significatif et si elle apporte un gain de Gini
       d'apprentissage d'au moins gain_min.
-    Le Gini de test est suivi à chaque étape pour information (il ne sert pas à la sélection)."""
+    Le Gini de test est suivi à chaque étape pour information (il ne sert pas à la sélection).
+
+    Options :
+    - fusions_initiales = {variable: {classe: nouvelle classe}} : regroupements décidés avant le stepwise
+      (ex. deux classes aux β quasi identiques), appliqués à l'apprentissage et au test ;
+    - fusion_retenues = True : si l'ajout rend non conforme une variable déjà retenue, la classe fautive de
+      celle-ci est fusionnée avec sa voisine (au lieu d'écarter la candidate), tant qu'il lui reste 2 classes."""
     retenues: list[str] = []
     fusions: dict[str, dict[int, int]] = {}
+    if fusions_initiales:
+        fusions = {v: {int(a): int(b) for a, b in m.items()} for v, m in fusions_initiales.items()}
+        df_app = appliquer_fusions(df_app, fusions)
     journal = []
     courant = ajuster_logit(df_app, [], target)
     gini_prec = 0.0
@@ -341,11 +351,12 @@ def stepwise_liaison(df_app: pl.DataFrame, candidates: list[str], target: str, d
         mapping = {c: c for c in classes}
         d = df_app
         motif, n_fusions, m = None, 0, None
+        fus_ret: dict[str, dict[int, int]] = {}   # fusions provisoires des variables déjà retenues (numérotation courante)
         while True:
             if len(set(mapping.values())) < 2:
                 motif = "une seule classe après fusions"
                 break
-            d = appliquer_fusions(df_app, {v: mapping})
+            d = appliquer_fusions(df_app, {**fus_ret, v: mapping})
             m = ajuster_logit(d, retenues + [v], target)
             if not m.convergence:
                 motif = "non convergence (quasi-séparation)"
@@ -354,6 +365,14 @@ def stepwise_liaison(df_app: pl.DataFrame, candidates: list[str], target: str, d
             pb_autres = par_var.filter((pl.col("variable") != v) & ~(
                 pl.col("monotone") & pl.col("modalites_significatives") & pl.col("ic_exclut_1") & pl.col("signes_ok")))
             if pb_autres.height:
+                u = pb_autres["variable"][0]
+                ku = _classe_a_fusionner(coefs.filter(pl.col("variable") == u), alpha)
+                classes_u = sorted(int(c) for c in d[u].drop_nulls().unique().to_list())
+                if fusion_retenues and ku is not None and len(classes_u) > 2:
+                    base_u = fus_ret.get(u, {c: c for c in sorted(int(c) for c in df_app[u].drop_nulls().unique().to_list())})
+                    fus_ret[u] = _composer(base_u, _fusion_avec_precedente(classes_u, ku))
+                    n_fusions += 1
+                    continue
                 motif = f"rend non conforme {', '.join(pb_autres['variable'])}"
                 break
             k = _classe_a_fusionner(coefs.filter(pl.col("variable") == v), alpha)
@@ -375,8 +394,13 @@ def stepwise_liaison(df_app: pl.DataFrame, candidates: list[str], target: str, d
                 motif = f"multicolinéarité (VIF max = {vif_max:.1f})"
             elif gini_app - gini_prec < gain_min:
                 motif = f"gain de Gini insuffisant (+{gini_app - gini_prec:.2%})"
+        # fusions complètes (depuis les classes d'origine) si la candidate est retenue
+        fus_new = dict(fusions)
+        for u, mu in fus_ret.items():
+            fus_new[u] = _composer(fusions.get(u, {c: c for c in mu}), mu)
+        fus_new[v] = _composer(fusions[v], mapping) if v in fusions else mapping
         if df_test is not None and m is not None and motif is None:
-            dt = appliquer_fusions(df_test, {**fusions, v: mapping})
+            dt = appliquer_fusions(df_test, fus_new)
             gini_test = performance(dt[target].to_numpy(), m.score_lineaire(dt))["gini"]
         retenue = motif is None
         journal.append({"etape": etape, "variable": v, "statut": "retenue" if retenue else "écartée",
@@ -386,8 +410,7 @@ def stepwise_liaison(df_app: pl.DataFrame, candidates: list[str], target: str, d
                         "gain_gini": None if gini_app is None else gini_app - gini_prec, "gini_test": gini_test})
         if retenue:
             retenues.append(v)
-            if any(a != b for a, b in mapping.items()):
-                fusions[v] = mapping
+            fusions = {u: mu for u, mu in fus_new.items() if any(a != b for a, b in mu.items())}
             df_app = d
             courant, gini_prec = m, gini_app
     schema = {"etape": pl.Int64, "variable": pl.String, "statut": pl.String, "motif": pl.String,
@@ -492,3 +515,61 @@ def lasso_exploratoire(df: pl.DataFrame, variables: list[str], target: str, n_c:
     rows = [{"variable": v, "n_modalites": len(modalites[v]),
              "n_non_nuls": sum(abs(coef[f"{v}_{k}"]) > 1e-8 for k in modalites[v])} for v in variables]
     return pl.DataFrame(rows).with_columns(retenue_lasso=pl.col("n_non_nuls") > 0), float(lasso.C_[0])
+
+
+# ---------------------------------------------------------------------------
+# 5.2 bis Diagnostic du modèle concurrent : d'où vient l'écart de Gini ?
+# ---------------------------------------------------------------------------
+
+def _plis(y, n_plis: int = 5, seed: int = 0):
+    from sklearn.model_selection import StratifiedKFold
+    y = np.asarray(y)
+    return list(StratifiedKFold(n_plis, shuffle=True, random_state=seed).split(np.zeros(len(y)), y))
+
+
+def gini_cv_logit(df: pl.DataFrame, variables: list[str], target: str, n_plis: int = 5, seed: int = 0) -> float:
+    """Gini de validation croisée (n_plis stratifiés) de la logistique sur les variables discrétisées : chaque dossier
+    est noté par un modèle estimé sans lui. Plus stable qu'un seul échantillon de test quand les défauts sont rares."""
+    from sklearn.metrics import roc_auc_score
+    y = df[target].to_numpy()
+    s = np.zeros(len(y))
+    for tr, va in _plis(y, n_plis, seed):
+        s[va] = ajuster_logit(df[tr], variables, target).score_lineaire(df[va])
+    return float(2 * roc_auc_score(y, s) - 1)
+
+
+def gini_cv_gb(df: pl.DataFrame, variables: list[str], target: str, n_plis: int = 5, seed: int = 0, **params) -> float:
+    """Gini de validation croisée du gradient boosting (mêmes plis que gini_cv_logit à seed égal)."""
+    from sklearn.metrics import roc_auc_score
+    y = df[target].to_numpy()
+    p = np.zeros(len(y))
+    for tr, va in _plis(y, n_plis, seed):
+        p[va] = predire_gb(gradient_boosting(df[tr], variables, target, **params), df[va])
+    return float(2 * roc_auc_score(y, p) - 1)
+
+
+def importance_permutation_gb(gb, df: pl.DataFrame, target: str, n_repeats: int = 5, seed: int = 0) -> pl.DataFrame:
+    """Importance par permutation (perte d'AUC quand la variable est mélangée) du gradient boosting."""
+    from sklearn.inspection import permutation_importance
+    X, _ = _encoder(df, gb.variables_, gb.codes_)
+    pi = permutation_importance(gb, X, df[target].to_numpy(), scoring="roc_auc", n_repeats=n_repeats, random_state=seed)
+    return pl.DataFrame({"variable": gb.variables_, "importance_auc": pi.importances_mean,
+                         "ecart_type": pi.importances_std}).sort("importance_auc", descending=True)
+
+
+def ajouts_un_a_un(df_app: pl.DataFrame, df_test: pl.DataFrame, variables: list[str], candidates: list[str], target: str,
+                   n_plis: int = 5, seed: int = 0, alpha: float = 0.05, seuil_vif: float = 5) -> pl.DataFrame:
+    """Ajoute chaque candidate, seule, au modèle `variables` : Gini de validation croisée (gain par rapport au modèle
+    de départ), Gini de test pour information, et conformité de toutes les variables aux tests du cours 5.1."""
+    from sklearn.metrics import roc_auc_score
+    base = gini_cv_logit(df_app, variables, target, n_plis, seed)
+    rows = []
+    for v in candidates:
+        m = ajuster_logit(df_app, variables + [v], target)
+        _, tv, _ = tests_modele(m, df_app, target, alpha=alpha, seuil_vif=seuil_vif)
+        rows.append({"variable": v, "gini_cv": gini_cv_logit(df_app, variables + [v], target, n_plis, seed),
+                     "gini_test": float(2 * roc_auc_score(df_test[target].to_numpy(), m.score_lineaire(df_test)) - 1),
+                     "conforme": bool(tv["conforme"].all()),
+                     "variables_non_conformes": ", ".join(tv.filter(~pl.col("conforme"))["variable"].to_list())})
+    return (pl.DataFrame(rows).with_columns(gain_cv=pl.col("gini_cv") - base)
+            .sort("gain_cv", descending=True))

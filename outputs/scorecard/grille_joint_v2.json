@@ -1,0 +1,332 @@
+{
+ "parametres": {
+  "points0": 600,
+  "odds0": 50,
+  "pdo": 20,
+  "total": 1000,
+  "offset": 487.1228762045055,
+  "factor": 28.85390081777927
+ },
+ "variables": [
+  "MINSOLDE_PAR",
+  "solde_crediteur",
+  "CRTAD_AG_NBJDE_BA",
+  "ENCOURS_PAR",
+  "ARR_GDT",
+  "anciennete_jour_sain_M0",
+  "CAUSE_SAIN_M0",
+  "horsbilan",
+  "SOLDE_EVOLUTION_T_vs_T1"
+ ],
+ "fusions": {
+  "MINSOLDE_PAR": {
+   "1": 1,
+   "2": 2,
+   "3": 2,
+   "4": 3
+  },
+  "ENCOURS_PAR": {
+   "1": 1,
+   "2": 1,
+   "3": 2
+  },
+  "anciennete_jour_sain_M0": {
+   "1": 1,
+   "2": 1,
+   "3": 2,
+   "4": 3
+  },
+  "solde_crediteur": {
+   "1": 1,
+   "2": 1,
+   "3": 1,
+   "4": 2
+  },
+  "SOLDE_EVOLUTION_T_vs_T1": {
+   "1": 1,
+   "2": 2,
+   "3": 2,
+   "4": 3
+  }
+ },
+ "grille_pdo": [
+  {
+   "variable": "MINSOLDE_PAR",
+   "classe": 1,
+   "beta": 0.0,
+   "points": 82.0
+  },
+  {
+   "variable": "MINSOLDE_PAR",
+   "classe": 2,
+   "beta": 0.8047550708266318,
+   "points": 59.0
+  },
+  {
+   "variable": "MINSOLDE_PAR",
+   "classe": 3,
+   "beta": 1.213454446865941,
+   "points": 47.0
+  },
+  {
+   "variable": "solde_crediteur",
+   "classe": 1,
+   "beta": 0.0,
+   "points": 82.0
+  },
+  {
+   "variable": "solde_crediteur",
+   "classe": 2,
+   "beta": 0.3186580276195453,
+   "points": 73.0
+  },
+  {
+   "variable": "CRTAD_AG_NBJDE_BA",
+   "classe": 1,
+   "beta": 0.0,
+   "points": 82.0
+  },
+  {
+   "variable": "CRTAD_AG_NBJDE_BA",
+   "classe": 2,
+   "beta": 0.992210405325265,
+   "points": 54.0
+  },
+  {
+   "variable": "CRTAD_AG_NBJDE_BA",
+   "classe": 3,
+   "beta": 1.3477887213581494,
+   "points": 43.0
+  },
+  {
+   "variable": "CRTAD_AG_NBJDE_BA",
+   "classe": 4,
+   "beta": 1.6495665074705352,
+   "points": 35.0
+  },
+  {
+   "variable": "ENCOURS_PAR",
+   "classe": 1,
+   "beta": 0.0,
+   "points": 82.0
+  },
+  {
+   "variable": "ENCOURS_PAR",
+   "classe": 2,
+   "beta": 1.1469996020725137,
+   "points": 49.0
+  },
+  {
+   "variable": "ARR_GDT",
+   "classe": 1,
+   "beta": 0.0,
+   "points": 82.0
+  },
+  {
+   "variable": "ARR_GDT",
+   "classe": 2,
+   "beta": 0.6960163448338577,
+   "points": 62.0
+  },
+  {
+   "variable": "anciennete_jour_sain_M0",
+   "classe": 1,
+   "beta": 0.0,
+   "points": 82.0
+  },
+  {
+   "variable": "anciennete_jour_sain_M0",
+   "classe": 2,
+   "beta": 0.5078253121352582,
+   "points": 68.0
+  },
+  {
+   "variable": "anciennete_jour_sain_M0",
+   "classe": 3,
+   "beta": 0.880677040839569,
+   "points": 57.0
+  },
+  {
+   "variable": "CAUSE_SAIN_M0",
+   "classe": 1,
+   "beta": 0.0,
+   "points": 82.0
+  },
+  {
+   "variable": "CAUSE_SAIN_M0",
+   "classe": 2,
+   "beta": 1.4259446663932784,
+   "points": 41.0
+  },
+  {
+   "variable": "horsbilan",
+   "classe": 1,
+   "beta": 0.0,
+   "points": 82.0
+  },
+  {
+   "variable": "horsbilan",
+   "classe": 2,
+   "beta": 1.0174013745473751,
+   "points": 53.0
+  },
+  {
+   "variable": "SOLDE_EVOLUTION_T_vs_T1",
+   "classe": 1,
+   "beta": 0.0,
+   "points": 82.0
+  },
+  {
+   "variable": "SOLDE_EVOLUTION_T_vs_T1",
+   "classe": 2,
+   "beta": 0.4936683373777549,
+   "points": 68.0
+  },
+  {
+   "variable": "SOLDE_EVOLUTION_T_vs_T1",
+   "classe": 3,
+   "beta": 0.5724198437782613,
+   "points": 66.0
+  }
+ ],
+ "grille_normalisation": [
+  {
+   "variable": "MINSOLDE_PAR",
+   "classe": 1,
+   "beta": 0.0,
+   "points": 136.0
+  },
+  {
+   "variable": "MINSOLDE_PAR",
+   "classe": 2,
+   "beta": 0.8047550708266318,
+   "points": 46.0
+  },
+  {
+   "variable": "MINSOLDE_PAR",
+   "classe": 3,
+   "beta": 1.213454446865941,
+   "points": 0.0
+  },
+  {
+   "variable": "solde_crediteur",
+   "classe": 1,
+   "beta": 0.0,
+   "points": 36.0
+  },
+  {
+   "variable": "solde_crediteur",
+   "classe": 2,
+   "beta": 0.3186580276195453,
+   "points": 0.0
+  },
+  {
+   "variable": "CRTAD_AG_NBJDE_BA",
+   "classe": 1,
+   "beta": 0.0,
+   "points": 185.0
+  },
+  {
+   "variable": "CRTAD_AG_NBJDE_BA",
+   "classe": 2,
+   "beta": 0.992210405325265,
+   "points": 74.0
+  },
+  {
+   "variable": "CRTAD_AG_NBJDE_BA",
+   "classe": 3,
+   "beta": 1.3477887213581494,
+   "points": 34.0
+  },
+  {
+   "variable": "CRTAD_AG_NBJDE_BA",
+   "classe": 4,
+   "beta": 1.6495665074705352,
+   "points": 0.0
+  },
+  {
+   "variable": "ENCOURS_PAR",
+   "classe": 1,
+   "beta": 0.0,
+   "points": 129.0
+  },
+  {
+   "variable": "ENCOURS_PAR",
+   "classe": 2,
+   "beta": 1.1469996020725137,
+   "points": 0.0
+  },
+  {
+   "variable": "ARR_GDT",
+   "classe": 1,
+   "beta": 0.0,
+   "points": 78.0
+  },
+  {
+   "variable": "ARR_GDT",
+   "classe": 2,
+   "beta": 0.6960163448338577,
+   "points": 0.0
+  },
+  {
+   "variable": "anciennete_jour_sain_M0",
+   "classe": 1,
+   "beta": 0.0,
+   "points": 99.0
+  },
+  {
+   "variable": "anciennete_jour_sain_M0",
+   "classe": 2,
+   "beta": 0.5078253121352582,
+   "points": 42.0
+  },
+  {
+   "variable": "anciennete_jour_sain_M0",
+   "classe": 3,
+   "beta": 0.880677040839569,
+   "points": 0.0
+  },
+  {
+   "variable": "CAUSE_SAIN_M0",
+   "classe": 1,
+   "beta": 0.0,
+   "points": 160.0
+  },
+  {
+   "variable": "CAUSE_SAIN_M0",
+   "classe": 2,
+   "beta": 1.4259446663932784,
+   "points": 0.0
+  },
+  {
+   "variable": "horsbilan",
+   "classe": 1,
+   "beta": 0.0,
+   "points": 114.0
+  },
+  {
+   "variable": "horsbilan",
+   "classe": 2,
+   "beta": 1.0174013745473751,
+   "points": 0.0
+  },
+  {
+   "variable": "SOLDE_EVOLUTION_T_vs_T1",
+   "classe": 1,
+   "beta": 0.0,
+   "points": 64.0
+  },
+  {
+   "variable": "SOLDE_EVOLUTION_T_vs_T1",
+   "classe": 2,
+   "beta": 0.4936683373777549,
+   "points": 9.0
+  },
+  {
+   "variable": "SOLDE_EVOLUTION_T_vs_T1",
+   "classe": 3,
+   "beta": 0.5724198437782613,
+   "points": 0.0
+  }
+ ]
+}

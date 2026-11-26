@@ -1,0 +1,17 @@
+{
+ "grille": "grille_joint_v2.json",
+ "decoupage": "optbinning, 4 classes max.",
+ "seuil": 0.3,
+ "bornes_points": [
+  600.0,
+  629.0,
+  676.0
+ ],
+ "libelles": {
+  "1": "> 676",
+  "2": "]629 ; 676]",
+  "3": "]600 ; 629]",
+  "4": "≤ 600"
+ },
+ "convention": "CHR 1 = la moins risquée ; points ]b(j-1) ; b(j)]"
+}

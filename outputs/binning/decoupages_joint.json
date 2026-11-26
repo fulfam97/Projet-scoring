@@ -7,9 +7,28 @@
   "missing_isole": false,
   "classe_missing": 4,
   "bornes": [
-   -1167.0,
-   12500.0,
-   35333.0
+   -1333.0,
+   12416.0,
+   35082.5
+  ],
+  "classes": [
+   4,
+   3,
+   2,
+   1
+  ]
+ },
+ "solde_crediteur": {
+  "variable": "solde_crediteur",
+  "nature": "numerique",
+  "sens": -1,
+  "n_classes_fin": 20,
+  "missing_isole": false,
+  "classe_missing": 4,
+  "bornes": [
+   1702.0,
+   5148.0,
+   46442.0
   ],
   "classes": [
    4,
@@ -24,36 +43,17 @@
   "sens": 1,
   "n_classes_fin": 12,
   "missing_isole": false,
-  "classe_missing": 5,
+  "classe_missing": 4,
   "bornes": [
-   6.0,
+   13.0,
    64.0,
-   230.0,
-   348.0
+   230.0
   ],
   "classes": [
    1,
    2,
    3,
-   4,
-   5
-  ]
- },
- "solde_crediteur": {
-  "variable": "solde_crediteur",
-  "nature": "numerique",
-  "sens": -1,
-  "n_classes_fin": 20,
-  "missing_isole": false,
-  "classe_missing": 3,
-  "bornes": [
-   1769.0,
-   9737.0
-  ],
-  "classes": [
-   3,
-   2,
-   1
+   4
   ]
  },
  "CRTAD_IND_0015": {
@@ -65,8 +65,8 @@
   "classe_missing": 4,
   "bornes": [
    0.0,
-   15.5,
-   26.0
+   10.0,
+   26.5
   ],
   "classes": [
    1,
@@ -81,11 +81,13 @@
   "sens": -1,
   "n_classes_fin": 17,
   "missing_isole": false,
-  "classe_missing": 2,
+  "classe_missing": 3,
   "bornes": [
-   15500.0
+   15499.5,
+   258166.5
   ],
   "classes": [
+   3,
    2,
    1
   ]
@@ -93,8 +95,8 @@
  "RATIO_NBJDEB_NONAUTO_SUR_NBJDEB": {
   "variable": "RATIO_NBJDEB_NONAUTO_SUR_NBJDEB",
   "nature": "numerique",
-  "sens": 1,
-  "n_classes_fin": 13,
+  "sens": -1,
+  "n_classes_fin": 3,
   "missing_isole": true,
   "classe_missing": 1,
   "bornes": [],
@@ -125,28 +127,13 @@
   "missing_isole": true,
   "classe_missing": 1,
   "bornes": [
-   0.375,
-   0.9545454545454546
+   0.5,
+   0.9561568136794912
   ],
   "classes": [
    2,
    3,
    4
-  ]
- },
- "horsbilan": {
-  "variable": "horsbilan",
-  "nature": "numerique",
-  "sens": -1,
-  "n_classes_fin": 12,
-  "missing_isole": false,
-  "classe_missing": 2,
-  "bornes": [
-   200.0
-  ],
-  "classes": [
-   2,
-   1
   ]
  },
  "RATIO_SOLDE_MOYEN_SUR_EPARGNE": {
@@ -157,10 +144,29 @@
   "missing_isole": true,
   "classe_missing": 2,
   "bornes": [
-   -0.012514755423797331
+   -0.016902326622543453
   ],
   "classes": [
    3,
+   1
+  ]
+ },
+ "anciennete_jour_sain_M0": {
+  "variable": "anciennete_jour_sain_M0",
+  "nature": "numerique",
+  "sens": -1,
+  "n_classes_fin": 12,
+  "missing_isole": false,
+  "classe_missing": 4,
+  "bornes": [
+   394.0,
+   1915.0,
+   3619.0
+  ],
+  "classes": [
+   4,
+   3,
+   2,
    1
   ]
  },
@@ -186,28 +192,45 @@
   "sens": -1,
   "n_classes_fin": 21,
   "missing_isole": false,
-  "classe_missing": 2,
+  "classe_missing": 3,
   "bornes": [
-   0.09756104263898498,
-   0.371218070465561
+   0.09293239377659945,
+   0.368947616424345,
+   0.6427134502923977
   ],
   "classes": [
+   4,
    3,
    2,
    1
   ]
  },
- "CRTAD_AG_MVTAFF_IND_0010": {
-  "variable": "CRTAD_AG_MVTAFF_IND_0010",
+ "horsbilan": {
+  "variable": "horsbilan",
+  "nature": "numerique",
+  "sens": -1,
+  "n_classes_fin": 12,
+  "missing_isole": false,
+  "classe_missing": 2,
+  "bornes": [
+   200.0
+  ],
+  "classes": [
+   2,
+   1
+  ]
+ },
+ "SOLDE_VOLATILITE_5T": {
+  "variable": "SOLDE_VOLATILITE_5T",
   "nature": "numerique",
   "sens": -1,
   "n_classes_fin": 20,
   "missing_isole": false,
   "classe_missing": 4,
   "bornes": [
-   77374.0,
-   203886.5,
-   419184.0
+   8244.095869166005,
+   39710.83199581696,
+   106944.01603970182
   ],
   "classes": [
    4,
@@ -222,10 +245,29 @@
   "sens": -1,
   "n_classes_fin": 21,
   "missing_isole": false,
+  "classe_missing": 3,
+  "bornes": [
+   -0.7172124524881791,
+   -0.4936204565579244,
+   -0.2754555198285102
+  ],
+  "classes": [
+   4,
+   3,
+   2,
+   1
+  ]
+ },
+ "SOLDE_EVOLUTION_T_vs_T4": {
+  "variable": "SOLDE_EVOLUTION_T_vs_T4",
+  "nature": "numerique",
+  "sens": -1,
+  "n_classes_fin": 21,
+  "missing_isole": false,
   "classe_missing": 2,
   "bornes": [
-   -0.7167792556539252,
-   -0.27537391304347825
+   -0.848157036596114,
+   -0.433607608330325
   ],
   "classes": [
    3,
@@ -241,8 +283,8 @@
   "missing_isole": false,
   "classe_missing": 3,
   "bornes": [
-   168.0,
-   254.0
+   167.0,
+   253.0
   ],
   "classes": [
    3,
@@ -250,17 +292,17 @@
    1
   ]
  },
- "SOLDE_VOLATILITE_3T": {
-  "variable": "SOLDE_VOLATILITE_3T",
+ "CRTAD_AG_MVTAFF_IND_0010": {
+  "variable": "CRTAD_AG_MVTAFF_IND_0010",
   "nature": "numerique",
   "sens": -1,
   "n_classes_fin": 20,
   "missing_isole": false,
   "classe_missing": 4,
   "bornes": [
-   5008.326400438907,
-   14897.858414326985,
-   77098.53339720542
+   76598.0,
+   152276.0,
+   419728.0
   ],
   "classes": [
    4,
@@ -269,19 +311,19 @@
    1
   ]
  },
- "SOLDE_EVOLUTION_T_vs_T4": {
-  "variable": "SOLDE_EVOLUTION_T_vs_T4",
+ "NBJ_ARR_SS_max_Mm10_Mm12": {
+  "variable": "NBJ_ARR_SS_max_Mm10_Mm12",
   "nature": "numerique",
-  "sens": -1,
-  "n_classes_fin": 21,
-  "missing_isole": false,
-  "classe_missing": 1,
+  "sens": 1,
+  "n_classes_fin": 8,
+  "missing_isole": true,
+  "classe_missing": 2,
   "bornes": [
-   -0.8444312621445554
+   4.0
   ],
   "classes": [
-   2,
-   1
+   1,
+   3
   ]
  },
  "NBJ_ARR_SS_max_Mm13_Mm18": {
@@ -303,7 +345,7 @@
   "variable": "RATIO_LITIGES_vs_AVOIRS",
   "nature": "numerique",
   "sens": 1,
-  "n_classes_fin": 11,
+  "n_classes_fin": 15,
   "missing_isole": true,
   "classe_missing": 2,
   "bornes": [],
@@ -323,40 +365,8 @@
    1
   ]
  },
- "NBECR_EVOLUTION_A_vs_A1": {
-  "variable": "NBECR_EVOLUTION_A_vs_A1",
-  "nature": "numerique",
-  "sens": -1,
-  "n_classes_fin": 21,
-  "missing_isole": false,
-  "classe_missing": 2,
-  "bornes": [
-   -0.4340277777777778,
-   -0.2903225806451613
-  ],
-  "classes": [
-   3,
-   2,
-   1
-  ]
- },
- "NBJ_ARR_SS_max_Mm7_Mm9": {
-  "variable": "NBJ_ARR_SS_max_Mm7_Mm9",
-  "nature": "numerique",
-  "sens": 1,
-  "n_classes_fin": 3,
-  "missing_isole": false,
-  "classe_missing": 1,
-  "bornes": [
-   0.0
-  ],
-  "classes": [
-   1,
-   2
-  ]
- },
- "NBJ_ARR_SS_max_Mm19_Mm24": {
-  "variable": "NBJ_ARR_SS_max_Mm19_Mm24",
+ "NBJ_ARR_SS_max_Mm37_Mm48": {
+  "variable": "NBJ_ARR_SS_max_Mm37_Mm48",
   "nature": "numerique",
   "sens": 1,
   "n_classes_fin": 3,
@@ -385,23 +395,8 @@
    2
   ]
  },
- "solde_debiteur": {
-  "variable": "solde_debiteur",
-  "nature": "numerique",
-  "sens": -1,
-  "n_classes_fin": 7,
-  "missing_isole": false,
-  "classe_missing": 2,
-  "bornes": [
-   -114.0
-  ],
-  "classes": [
-   2,
-   1
-  ]
- },
- "NBJ_ARR_SS_max_Mm37_Mm48": {
-  "variable": "NBJ_ARR_SS_max_Mm37_Mm48",
+ "NBJ_ARR_SS_max_Mm19_Mm24": {
+  "variable": "NBJ_ARR_SS_max_Mm19_Mm24",
   "nature": "numerique",
   "sens": 1,
   "n_classes_fin": 3,
@@ -415,19 +410,66 @@
    3
   ]
  },
- "NBJ_ARR_SS_max_Mm10_Mm12": {
-  "variable": "NBJ_ARR_SS_max_Mm10_Mm12",
+ "NBECR_EVOLUTION_A_vs_A1": {
+  "variable": "NBECR_EVOLUTION_A_vs_A1",
+  "nature": "numerique",
+  "sens": -1,
+  "n_classes_fin": 21,
+  "missing_isole": false,
+  "classe_missing": 2,
+  "bornes": [
+   -0.43564356435643564,
+   -0.2913669064748201
+  ],
+  "classes": [
+   3,
+   2,
+   1
+  ]
+ },
+ "NBJ_ARR_SS_max_Mm7_Mm9": {
+  "variable": "NBJ_ARR_SS_max_Mm7_Mm9",
   "nature": "numerique",
   "sens": 1,
-  "n_classes_fin": 8,
+  "n_classes_fin": 3,
   "missing_isole": false,
   "classe_missing": 1,
   "bornes": [
-   4.0
+   0.0
   ],
   "classes": [
    1,
    2
+  ]
+ },
+ "solde_debiteur": {
+  "variable": "solde_debiteur",
+  "nature": "numerique",
+  "sens": -1,
+  "n_classes_fin": 7,
+  "missing_isole": false,
+  "classe_missing": 2,
+  "bornes": [
+   -111.0
+  ],
+  "classes": [
+   2,
+   1
+  ]
+ },
+ "SOLDE_PENTE_5T": {
+  "variable": "SOLDE_PENTE_5T",
+  "nature": "numerique",
+  "sens": -1,
+  "n_classes_fin": 20,
+  "missing_isole": false,
+  "classe_missing": 2,
+  "bornes": [
+   4050.0
+  ],
+  "classes": [
+   2,
+   1
   ]
  },
  "NBJ_ARR_SS_max_Mm25_Mm36": {
@@ -445,38 +487,6 @@
    3
   ]
  },
- "SOLDE_PENTE_5T": {
-  "variable": "SOLDE_PENTE_5T",
-  "nature": "numerique",
-  "sens": -1,
-  "n_classes_fin": 20,
-  "missing_isole": false,
-  "classe_missing": 2,
-  "bornes": [
-   4016.55
-  ],
-  "classes": [
-   2,
-   1
-  ]
- },
- "CRTAD_IND_0042": {
-  "variable": "CRTAD_IND_0042",
-  "nature": "numerique",
-  "sens": -1,
-  "n_classes_fin": 20,
-  "missing_isole": false,
-  "classe_missing": 3,
-  "bornes": [
-   2.0,
-   9.0
-  ],
-  "classes": [
-   3,
-   2,
-   1
-  ]
- },
  "bilan": {
   "variable": "bilan",
   "nature": "numerique",
@@ -485,7 +495,7 @@
   "missing_isole": false,
   "classe_missing": 2,
   "bornes": [
-   5.21
+   5.0
   ],
   "classes": [
    1,
@@ -505,6 +515,23 @@
   "classes": [
    1,
    2
+  ]
+ },
+ "CRTAD_IND_0042": {
+  "variable": "CRTAD_IND_0042",
+  "nature": "numerique",
+  "sens": -1,
+  "n_classes_fin": 20,
+  "missing_isole": false,
+  "classe_missing": 3,
+  "bornes": [
+   2.0,
+   9.0
+  ],
+  "classes": [
+   3,
+   2,
+   1
   ]
  },
  "SOLDE_PENTE_3T": {
@@ -531,8 +558,8 @@
   "classe_missing": 2,
   "modalites": {
    "5ans+": 1,
-   "2-5ans": 2,
    "1-2ans": 2,
+   "2-5ans": 2,
    "<1an": 2,
    "missing": 2
   },
@@ -546,7 +573,7 @@
   "missing_isole": false,
   "classe_missing": 2,
   "bornes": [
-   161045.0
+   161113.0
   ],
   "classes": [
    1,
@@ -589,7 +616,7 @@
   "variable": "nb_credit_perso",
   "nature": "numerique",
   "sens": 1,
-  "n_classes_fin": 6,
+  "n_classes_fin": 7,
   "missing_isole": false,
   "classe_missing": 2,
   "bornes": [
@@ -598,36 +625,6 @@
   "classes": [
    1,
    2
-  ]
- },
- "nb_credit_immo__crelog": {
-  "variable": "nb_credit_immo__crelog",
-  "nature": "numerique",
-  "sens": -1,
-  "n_classes_fin": 10,
-  "missing_isole": false,
-  "classe_missing": 2,
-  "bornes": [
-   0.0
-  ],
-  "classes": [
-   2,
-   1
-  ]
- },
- "nb_crt_distincts": {
-  "variable": "nb_crt_distincts",
-  "nature": "numerique",
-  "sens": -1,
-  "n_classes_fin": 6,
-  "missing_isole": false,
-  "classe_missing": 2,
-  "bornes": [
-   1.0
-  ],
-  "classes": [
-   2,
-   1
   ]
  }
 }
