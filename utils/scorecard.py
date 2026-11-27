@@ -112,8 +112,8 @@ def plot_distribution_score(score, y, titre: str = "", bins: int = 40):
     """Distribution du score en points chez les sains et chez les défauts (densités)."""
     score, y = np.asarray(score), np.asarray(y)
     fig, ax = plt.subplots(figsize=(9, 4))
-    ax.hist(score[y == 0], bins=bins, density=True, alpha=0.6, label="sains")
-    ax.hist(score[y == 1], bins=bins, density=True, alpha=0.6, label="défauts")
+    ax.hist(score[y == 0], bins=bins, density=True, alpha=0.6, label="sains",edgecolor="none")
+    ax.hist(score[y == 1], bins=bins, density=True, alpha=0.6, label="défauts",edgecolor="none")
     ax.set(xlabel="score (points)", ylabel="densité", title=titre)
     ax.legend()
     fig.tight_layout()

@@ -59,15 +59,17 @@ def ks_stat(y, score) -> float:
 
 
 def performance(y, score, nom: str = "") -> dict:
-    """AUC, Gini (= 2 AUC − 1), IC95 % du Gini (Hanley & McNeil), KS. `score` croît avec le risque."""
-    from sklearn.metrics import roc_auc_score
-    y, score = np.asarray(y), np.asarray(score)
+    """AUC, Gini (= 2 AUC − 1), IC95 % du Gini (Hanley & McNeil), KS, AUC PR (average precision) et ratio PR
+    (= AUC PR / taux de défaut, l'AUC PR d'un score aléatoire valant le taux de défaut). `score` croît avec le risque."""
+    from sklearn.metrics import average_precision_score, roc_auc_score
+    y, score = np.asarray(y), np.asarray(score, dtype=float)
     n1, n0 = int(y.sum()), int(len(y) - y.sum())
     auc = float(roc_auc_score(y, score))
     se = auc_hanley_mcneil(auc, n0, n1)
+    auc_pr = float(average_precision_score(y, score))
     return {"modele": nom, "n": len(y), "n_defaut": n1, "auc": auc, "gini": 2 * auc - 1,
             "gini_ic_bas": 2 * (auc - 1.96 * se) - 1, "gini_ic_haut": 2 * (auc + 1.96 * se) - 1,
-            "ks": ks_stat(y, score)}
+            "ks": ks_stat(y, score), "auc_pr": auc_pr, "ratio_pr": auc_pr / (n1 / len(y))}
 
 
 def _midrank(x: np.ndarray) -> np.ndarray:
