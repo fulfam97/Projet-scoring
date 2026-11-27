@@ -1,0 +1,17 @@
+{
+ "grille": "grille_joint.json",
+ "critere": "ic",
+ "seuil": 0.3,
+ "bornes_points": [
+  594.0,
+  632.0,
+  671.0
+ ],
+ "libelles": {
+  "1": "> 671",
+  "2": "]632 ; 671]",
+  "3": "]594 ; 632]",
+  "4": "≤ 594"
+ },
+ "convention": "CHR 1 = la moins risquée ; points ]b(j-1) ; b(j)]"
+}
