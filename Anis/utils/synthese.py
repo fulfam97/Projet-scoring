@@ -46,7 +46,7 @@ def _table(lignes: list[tuple], entete: tuple) -> str:
 
 
 # ---------------------------------------------------------------------------
-# Chapitre 2 — Préparation des données (notebook 0c)
+# Chapitre 2 — Préparation des données (notebook 2)
 # ---------------------------------------------------------------------------
 
 def constat_manquants(tab_missing: pl.DataFrame, alpha: float = 0.05, seuil_quasi_vide: float = 0.95,
@@ -118,7 +118,7 @@ def constat_preselection(preselection: pl.DataFrame, top: int = 10) -> str:
 
 
 # ---------------------------------------------------------------------------
-# Chapitre 3 — Analyse exploratoire (notebook 0d)
+# Chapitre 3 — Analyse exploratoire (notebook 3)
 # ---------------------------------------------------------------------------
 
 def lecture_acp(variance: pl.DataFrame, correlations: pl.DataFrame, axes: tuple[str, ...] = ("F1", "F2"),
@@ -174,7 +174,7 @@ def synthese_exploration(paires_quanti: pl.DataFrame, paires_quali: pl.DataFrame
 
 
 # ---------------------------------------------------------------------------
-# Chapitre 4 — Discrétisation (notebook 1a)
+# Chapitre 4 — Discrétisation (notebook 4)
 # ---------------------------------------------------------------------------
 
 def _col(df: pl.DataFrame, prefixe: str, methode: str) -> str | None:
@@ -245,7 +245,7 @@ def synthese_discretisation(comparaison: pl.DataFrame, bilan: pl.DataFrame, fich
         ("4.3 WoE / IV", f"perte d'IV médiane de {_pct(bilan['perte_iv'].median())} pour "
          f"{_num(bilan['n_classes'].mean(), 1)} classes en moyenne", "perte acceptée au titre de la parcimonie"),
         ("4.4 Monotonie", f"{len(exemptees)} exemptions : {_liste(exemptees, 5)}",
-         "monotonie imposée partout" if not exemptees else "exemptions justifiées métier (0d, § 3.5)"),
+         "monotonie imposée partout" if not exemptees else "exemptions justifiées métier (3, § 3.5)"),
         ("4.5 Missing", f"isolé pour {n_miss} variables sur {bilan.height}", "fusionné avec la classe de risque la plus proche ailleurs"),
         ("4.6 Stabilité", f"{a_revoir} variables à revoir", "variables à revoir non transmises au ch. 5"),
         ("4.7 Bilan", f"{retenues} retenues, {a_revoir} à revoir, {ecartees} écartées", "variables retenues transmises au ch. 5"),
