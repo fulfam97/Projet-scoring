@@ -1,0 +1,504 @@
+{
+  "RECENCE_SAIN_MOIS": {
+    "type": "num",
+    "bornes": [
+      20.0,
+      53.0
+    ],
+    "missing": "]-inf ; 20]",
+    "methode": "arbre"
+  },
+  "CRTAD_AG_NBJDE_BA": {
+    "type": "num",
+    "bornes": [
+      3.0,
+      32.0
+    ],
+    "missing": null,
+    "methode": "quantiles"
+  },
+  "solde_DAV_moyen": {
+    "type": "num",
+    "bornes": [
+      970.0
+    ],
+    "missing": null,
+    "methode": "arbre"
+  },
+  "MINSOLDE_PAR": {
+    "type": "num",
+    "bornes": [
+      -170.0,
+      26000.0,
+      61000.0
+    ],
+    "missing": null,
+    "methode": "xgb"
+  },
+  "ENCOURS_PAR": {
+    "type": "num",
+    "bornes": [
+      53000.0
+    ],
+    "missing": null,
+    "methode": "quantiles"
+  },
+  "CRTAD_AG_NBJDE_BB": {
+    "type": "num",
+    "bornes": [
+      2.0
+    ],
+    "missing": null,
+    "methode": "quantiles"
+  },
+  "SOLDE_RATIO_T_vs_HIST": {
+    "type": "num",
+    "bornes": [
+      2.6
+    ],
+    "missing": null,
+    "methode": "arbre"
+  },
+  "RATIO_ECR": {
+    "type": "num",
+    "bornes": [
+      0.93
+    ],
+    "missing": null,
+    "methode": "arbre"
+  },
+  "ANCIENNETE_modif": {
+    "type": "num",
+    "bornes": [
+      16.0,
+      370.0
+    ],
+    "missing": null,
+    "methode": "xgb"
+  },
+  "SOLDE_VOLATILITE_5T": {
+    "type": "num",
+    "bornes": [
+      130000.0
+    ],
+    "missing": null,
+    "methode": "arbre"
+  },
+  "SOLDE_EVOLUTION_T_vs_T4": {
+    "type": "num",
+    "bornes": [
+      3.1
+    ],
+    "missing": null,
+    "methode": "arbre"
+  },
+  "NBJ_ARR_SS_max_Mm25_Mm36": {
+    "type": "num",
+    "bornes": [],
+    "missing": null,
+    "methode": "quantiles"
+  },
+  "RECENCE_ARR_MOIS": {
+    "type": "num",
+    "bornes": [
+      22.0
+    ],
+    "missing": null,
+    "methode": "modalites"
+  },
+  "NB_FENETRES_ARR_48M": {
+    "type": "num",
+    "bornes": [
+      0.0
+    ],
+    "missing": null,
+    "methode": "modalites"
+  },
+  "PART_VIE_CLIENT": {
+    "type": "num",
+    "bornes": [
+      0.071,
+      0.31
+    ],
+    "missing": null,
+    "methode": "quantiles"
+  },
+  "RATIO_SOLDE_MOYEN_SUR_EPARGNE": {
+    "type": "num",
+    "bornes": [
+      2.945610764876077
+    ],
+    "missing": null,
+    "methode": "xgb"
+  },
+  "NBJ_ARR_SS_max_Mm37_Mm48": {
+    "type": "num",
+    "bornes": [],
+    "missing": null,
+    "methode": "quantiles"
+  },
+  "SOLDE_PENTE_5T": {
+    "type": "num",
+    "bornes": [
+      14000.0
+    ],
+    "missing": null,
+    "methode": "arbre"
+  },
+  "PART_EPARGNE_DANS_AVOIRS": {
+    "type": "num",
+    "bornes": [],
+    "missing": null,
+    "methode": "quantiles"
+  },
+  "SOLDE_PENTE_3T": {
+    "type": "num",
+    "bornes": [
+      37000.0
+    ],
+    "missing": null,
+    "methode": "xgb"
+  },
+  "NBJ_ARR_SS_max_Mm19_Mm24": {
+    "type": "num",
+    "bornes": [],
+    "missing": null,
+    "methode": "quantiles"
+  },
+  "RATIO_NBJDEB_NONAUTO_SUR_NBJDEB": {
+    "type": "num",
+    "bornes": [],
+    "missing": null,
+    "methode": "quantiles"
+  },
+  "NB_FENETRES_DFO_48M": {
+    "type": "num",
+    "bornes": [
+      0.0
+    ],
+    "missing": null,
+    "methode": "modalites"
+  },
+  "RATIO_LITIGES_vs_AVOIRS": {
+    "type": "num",
+    "bornes": [],
+    "missing": null,
+    "methode": "modalites"
+  },
+  "RATIO_MOUV_AFF_SUR_EPARGNE": {
+    "type": "num",
+    "bornes": [],
+    "missing": null,
+    "methode": "quantiles"
+  },
+  "AGE_PP_EN_MOIS": {
+    "type": "num",
+    "bornes": [
+      775.0
+    ],
+    "missing": null,
+    "methode": "quantiles"
+  },
+  "TOP_HISTO_DEFAUT": {
+    "type": "num",
+    "bornes": [
+      0.0
+    ],
+    "missing": null,
+    "methode": "modalites"
+  },
+  "NBJ_ARR_SS_max_Mm10_Mm12": {
+    "type": "num",
+    "bornes": [],
+    "missing": null,
+    "methode": "quantiles"
+  },
+  "Dfo_max_Mm7_Mm9": {
+    "type": "num",
+    "bornes": [],
+    "missing": "]-inf ; +inf]",
+    "methode": "modalites"
+  },
+  "CRTAD_AG_NBECR_B": {
+    "type": "num",
+    "bornes": [],
+    "missing": null,
+    "methode": "quantiles"
+  },
+  "Dfo_max_Mm4_Mm6": {
+    "type": "num",
+    "bornes": [],
+    "missing": "]-inf ; +inf]",
+    "methode": "modalites"
+  },
+  "Dfo_max_Mm10_Mm12": {
+    "type": "num",
+    "bornes": [],
+    "missing": "]-inf ; +inf]",
+    "methode": "modalites"
+  },
+  "TOP_SOLDE_MIN_NEGATIF": {
+    "type": "num",
+    "bornes": [
+      0.0
+    ],
+    "missing": null,
+    "methode": "modalites"
+  },
+  "Dfo_max_Mm19_Mm24": {
+    "type": "num",
+    "bornes": [],
+    "missing": "]-inf ; +inf]",
+    "methode": "modalites"
+  },
+  "NBJ_ARR_SS_max_Mm4_Mm6": {
+    "type": "num",
+    "bornes": [
+      2.5
+    ],
+    "missing": null,
+    "methode": "arbre"
+  },
+  "DUREE_DFO_MOIS": {
+    "type": "num",
+    "bornes": [],
+    "missing": null,
+    "methode": "quantiles"
+  },
+  "CRTAD_AG_MVTAFF_IND_0010": {
+    "type": "num",
+    "bornes": [],
+    "missing": null,
+    "methode": "quantiles"
+  },
+  "Dfo_max_Mm25_Mm36": {
+    "type": "num",
+    "bornes": [],
+    "missing": "]-inf ; +inf]",
+    "methode": "modalites"
+  },
+  "Dfo_max_Mm37_Mm48": {
+    "type": "num",
+    "bornes": [],
+    "missing": "]-inf ; +inf]",
+    "methode": "modalites"
+  },
+  "TOP_COMPTE_INACTIF": {
+    "type": "num",
+    "bornes": [],
+    "missing": null,
+    "methode": "modalites"
+  },
+  "NBJ_ARR_SS_max_Mm1_Mm3": {
+    "type": "num",
+    "bornes": [],
+    "missing": "]-inf ; +inf]",
+    "methode": "quantiles"
+  },
+  "CRTAD_IND_0205": {
+    "type": "num",
+    "bornes": [],
+    "missing": null,
+    "methode": "quantiles"
+  },
+  "cod_axe_unite": {
+    "type": "num",
+    "bornes": [],
+    "missing": null,
+    "methode": "modalites"
+  },
+  "RATIO_DEBIT_CREDIT_12M": {
+    "type": "num",
+    "bornes": [],
+    "missing": null,
+    "methode": "quantiles"
+  },
+  "CRTPI_IND_0036": {
+    "type": "num",
+    "bornes": [],
+    "missing": null,
+    "methode": "quantiles"
+  },
+  "nb_crt_distincts": {
+    "type": "num",
+    "bornes": [],
+    "missing": null,
+    "methode": "modalites"
+  },
+  "nb_produits_distincts": {
+    "type": "num",
+    "bornes": [],
+    "missing": null,
+    "methode": "modalites"
+  },
+  "CRTAR_IND_0036": {
+    "type": "num",
+    "bornes": [],
+    "missing": null,
+    "methode": "quantiles"
+  },
+  "solde_debiteur": {
+    "type": "num",
+    "bornes": [
+      -0.5
+    ],
+    "missing": null,
+    "methode": "arbre"
+  },
+  "CAUSE_SAIN_M0": {
+    "type": "quali",
+    "groupes": {
+      "eer": "G1",
+      "exception": "G1",
+      "fin de contagion": "G2",
+      "retour en sain": "G2"
+    },
+    "ordre": [
+      "G1",
+      "G2"
+    ],
+    "missing": "G1",
+    "methode": "modalites"
+  },
+  "CODACVPRO_modif": {
+    "type": "quali",
+    "groupes": {
+      "1100": "G4",
+      "1200": "G1",
+      "1300": "G1",
+      "2100": "G1",
+      "2114": "G3",
+      "2150": "G4",
+      "2168": "G2",
+      "2190": "G1",
+      "2200": "G3",
+      "2310": "G1",
+      "2320": "G1",
+      "2330": "G3",
+      "3111": "G2",
+      "3112": "G1",
+      "3113": "G2",
+      "3114": "G1",
+      "3115": "G4",
+      "3116": "G1",
+      "3121": "G4",
+      "3122": "G1",
+      "3123": "G1",
+      "3124": "G1",
+      "3125": "G2",
+      "3127": "G4",
+      "3128": "G1",
+      "3130": "G4",
+      "3300": "G1",
+      "3410": "G1",
+      "3421": "G1",
+      "3430": "G1",
+      "3431": "G1",
+      "3500": "G1",
+      "3600": "G1",
+      "4200": "G2",
+      "4300": "G3",
+      "4400": "G1",
+      "4500": "G2",
+      "4600": "G2",
+      "4700": "G2",
+      "5100": "G2",
+      "5400": "G2",
+      "5500": "G2",
+      "5600": "G2",
+      "6100": "G4",
+      "6900": "G1",
+      "7000": "G1",
+      "7100": "G1",
+      "7200": "G1",
+      "7300": "G1",
+      "7600": "G1",
+      "8100": "G4",
+      "8400": "G2",
+      "8401": "G1",
+      "8402": "G2",
+      "8403": "G1",
+      "8500": "G2",
+      "8600": "G3",
+      "9999": "G1"
+    },
+    "ordre": [
+      "G1",
+      "G2",
+      "G3",
+      "G4"
+    ],
+    "missing": null,
+    "methode": "modalites"
+  },
+  "INTER_1": {
+    "type": "quali",
+    "groupes": {
+      "F1": "G2",
+      "F3": "G2",
+      "F4": "G1"
+    },
+    "ordre": [
+      "G1",
+      "G2"
+    ],
+    "missing": null,
+    "methode": "modalites"
+  },
+  "INTER_2": {
+    "type": "quali",
+    "groupes": {
+      "F1": "G2",
+      "F3": "G1",
+      "F4": "G2"
+    },
+    "ordre": [
+      "G1",
+      "G2"
+    ],
+    "missing": null,
+    "methode": "modalites"
+  },
+  "INTER_3": {
+    "type": "quali",
+    "groupes": {
+      "F1": "G2",
+      "F3": "G1",
+      "F4": "G2"
+    },
+    "ordre": [
+      "G1",
+      "G2"
+    ],
+    "missing": null,
+    "methode": "modalites"
+  },
+  "INTER_5": {
+    "type": "quali",
+    "groupes": {
+      "F1": "G2",
+      "F3": "G1",
+      "F4": "G2"
+    },
+    "ordre": [
+      "G1",
+      "G2"
+    ],
+    "missing": null,
+    "methode": "modalites"
+  },
+  "INTER_6": {
+    "type": "quali",
+    "groupes": {
+      "F1": "G2",
+      "F3": "G1",
+      "F4": "G2"
+    },
+    "ordre": [
+      "G1",
+      "G2"
+    ],
+    "missing": null,
+    "methode": "modalites"
+  }
+}
