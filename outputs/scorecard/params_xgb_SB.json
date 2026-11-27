@@ -1,0 +1,134 @@
+{
+ "params": {
+  "max_depth": 6,
+  "learning_rate": 0.01,
+  "min_child_weight": 10,
+  "subsample": 0.6,
+  "colsample_bytree": 0.7,
+  "reg_lambda": 10.0,
+  "gamma": 0.5
+ },
+ "essais": [
+  {
+   "max_depth": 6,
+   "learning_rate": 0.01,
+   "min_child_weight": 10,
+   "subsample": 0.6,
+   "colsample_bytree": 0.7,
+   "reg_lambda": 10.0,
+   "gamma": 0.5,
+   "gini_cv": 0.859129,
+   "gini_cv_ecart_type": 0.00469,
+   "n_arbres_moyen": 762.0
+  },
+  {
+   "max_depth": 5,
+   "learning_rate": 0.03,
+   "min_child_weight": 10,
+   "subsample": 0.8,
+   "colsample_bytree": 0.9,
+   "reg_lambda": 0.1,
+   "gamma": 1.0,
+   "gini_cv": 0.858191,
+   "gini_cv_ecart_type": 0.005747,
+   "n_arbres_moyen": 140.0
+  },
+  {
+   "max_depth": 6,
+   "learning_rate": 0.01,
+   "min_child_weight": 1,
+   "subsample": 0.6,
+   "colsample_bytree": 0.9,
+   "reg_lambda": 10.0,
+   "gamma": 1.0,
+   "gini_cv": 0.858083,
+   "gini_cv_ecart_type": 0.004707,
+   "n_arbres_moyen": 688.666667
+  },
+  {
+   "max_depth": 6,
+   "learning_rate": 0.05,
+   "min_child_weight": 10,
+   "subsample": 0.6,
+   "colsample_bytree": 0.7,
+   "reg_lambda": 0.1,
+   "gamma": 0.0,
+   "gini_cv": 0.857765,
+   "gini_cv_ecart_type": 0.003857,
+   "n_arbres_moyen": 77.333333
+  },
+  {
+   "max_depth": 3,
+   "learning_rate": 0.03,
+   "min_child_weight": 10,
+   "subsample": 0.8,
+   "colsample_bytree": 0.9,
+   "reg_lambda": 10.0,
+   "gamma": 0.0,
+   "gini_cv": 0.857599,
+   "gini_cv_ecart_type": 0.004838,
+   "n_arbres_moyen": 302.666667
+  },
+  {
+   "max_depth": 4,
+   "learning_rate": 0.01,
+   "min_child_weight": 5,
+   "subsample": 0.8,
+   "colsample_bytree": 0.7,
+   "reg_lambda": 1.0,
+   "gamma": 0.0,
+   "gini_cv": 0.857131,
+   "gini_cv_ecart_type": 0.005041,
+   "n_arbres_moyen": 604.0
+  },
+  {
+   "max_depth": 5,
+   "learning_rate": 0.05,
+   "min_child_weight": 10,
+   "subsample": 0.8,
+   "colsample_bytree": 1.0,
+   "reg_lambda": 1.0,
+   "gamma": 0.0,
+   "gini_cv": 0.857001,
+   "gini_cv_ecart_type": 0.004927,
+   "n_arbres_moyen": 107.0
+  },
+  {
+   "max_depth": 4,
+   "learning_rate": 0.05,
+   "min_child_weight": 20,
+   "subsample": 1.0,
+   "colsample_bytree": 0.7,
+   "reg_lambda": 1.0,
+   "gamma": 0.5,
+   "gini_cv": 0.85687,
+   "gini_cv_ecart_type": 0.005052,
+   "n_arbres_moyen": 125.666667
+  },
+  {
+   "max_depth": 6,
+   "learning_rate": 0.01,
+   "min_child_weight": 1,
+   "subsample": 1.0,
+   "colsample_bytree": 0.7,
+   "reg_lambda": 5.0,
+   "gamma": 0.0,
+   "gini_cv": 0.856498,
+   "gini_cv_ecart_type": 0.004123,
+   "n_arbres_moyen": 465.666667
+  },
+  {
+   "max_depth": 3,
+   "learning_rate": 0.1,
+   "min_child_weight": 1,
+   "subsample": 0.8,
+   "colsample_bytree": 0.9,
+   "reg_lambda": 10.0,
+   "gamma": 0.5,
+   "gini_cv": 0.856066,
+   "gini_cv_ecart_type": 0.004584,
+   "n_arbres_moyen": 129.0
+  }
+ ],
+ "note": "10 meilleures combinaisons sur 30 (recherche du 2026-11-13)"
+}

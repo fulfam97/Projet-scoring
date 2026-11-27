@@ -17,32 +17,6 @@
     "missing": "]-inf ; 0]",
     "methode": "quantiles + regroupement"
   },
-  "TX_UTIL_DAV": {
-    "type": "num",
-    "bornes": [
-      3.7,
-      19.0
-    ],
-    "missing": "]19 ; +inf]",
-    "methode": "arbre + regroupement"
-  },
-  "ARR_GDT": {
-    "type": "num",
-    "bornes": [
-      3.0
-    ],
-    "missing": "]3 ; +inf]",
-    "methode": "arbre"
-  },
-  "MINSOLDE_PAR": {
-    "type": "num",
-    "bornes": [
-      2700.0,
-      37000.0
-    ],
-    "missing": "]-inf ; 2700]",
-    "methode": "arbre"
-  },
   "CRTAE_AG_SLDEPA": {
     "type": "num",
     "bornes": [
@@ -99,5 +73,29 @@
     ],
     "missing": "G2",
     "methode": "modalites"
+  },
+  "ARR_GDT": {
+    "type": "num",
+    "bornes": [
+      68.0
+    ],
+    "missing": "]68 ; +inf]",
+    "methode": " + regroupement"
+  },
+  "bilan": {
+    "type": "num",
+    "bornes": [
+      0.0
+    ],
+    "missing": "]0 ; +inf]"
+  },
+  "TX_UTIL_DAV": {
+    "type": "num",
+    "bornes": [
+      3.7,
+      19.0
+    ],
+    "missing": "]19 ; +inf]",
+    "methode": " + regroupement"
   }
 }

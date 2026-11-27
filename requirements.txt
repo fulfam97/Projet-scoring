@@ -9,4 +9,6 @@ xlsxwriter
 ipykernel
 matplotlib
 xgboost
-fastexcel
+fastexceloptbinning
+lightgbm
+catboost

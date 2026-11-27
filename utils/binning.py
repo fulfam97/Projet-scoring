@@ -308,10 +308,30 @@ def bornes_xgb(df: pl.DataFrame, var: str, target: str, sens: int | None = None,
 METHODES = ("quantiles", "arbre", "xgb")
 
 
+def bornes_optbinning(df: pl.DataFrame, var: str, target: str, part_min: float = 0.05, defauts_min: int = 20,
+                      monotone: bool = True, max_n_prebins: int = 20) -> list[float]:
+    """Découpage optimal (optbinning, programmation par contraintes) : bornes qui maximisent l'IV sous contraintes
+    d'effectif et de défauts minimaux par classe, et de monotonie (sens choisi automatiquement) si monotone.
+    Coupures placées au milieu de deux valeurs observées (convention ]a ; b])."""
+    from optbinning import OptimalBinning
+
+    x, y = df[var].cast(pl.Float64).to_numpy(), df[target].to_numpy().astype(int)
+    ob = OptimalBinning(name=var, dtype="numerical", solver="cp", max_n_prebins=max_n_prebins,
+                        monotonic_trend="auto_asc_desc" if monotone else "auto",
+                        min_bin_size=part_min, min_bin_n_event=defauts_min)
+    ob.fit(x, y)
+    valeurs = np.unique(x[~np.isnan(x)])
+    bornes = []
+    for s in ob.splits:
+        i = np.searchsorted(valeurs, s, side="left")
+        bornes.append(float((valeurs[i - 1] + valeurs[i]) / 2) if 0 < i < len(valeurs) else float(s))
+    return sorted(set(bornes))
+
+
 def regle_par_methode(df: pl.DataFrame, var: str, target: str, methode: str, date: str | None = None,
                       n_bins: int = 20, part_min: float = 0.05, defauts_min: int = 20, ecart_min: float = 0.3,
                       monotone: bool = True) -> dict:
-    """Découpage fin selon la méthode ('quantiles', 'arbre', 'xgb', 'modalites') puis regroupement selon
+    """Découpage fin selon la méthode ('quantiles', 'arbre', 'xgb', 'optbinning', 'modalites') puis regroupement selon
     les règles du cours. 'modalites' : qualitative ou numérique à peu de valeurs (une classe par valeur)."""
     if methode == "modalites":
         fine = regle_fine(df, var, max_modalites=10 ** 9)
@@ -320,6 +340,7 @@ def regle_par_methode(df: pl.DataFrame, var: str, target: str, methode: str, dat
             "quantiles": lambda: bornes_quantiles(df, var, n_bins),
             "arbre": lambda: bornes_arbre(df, var, target, max_classes=n_bins, part_min=part_min / 2),
             "xgb": lambda: bornes_xgb(df, var, target, sens=None if monotone else 0, part_min=part_min / 2),
+            "optbinning": lambda: bornes_optbinning(df, var, target, part_min, defauts_min, monotone),
         }[methode]()
         fine = {"type": "num", "bornes": bornes, "missing": None}
     return regrouper(df, var, target, fine, date, part_min, defauts_min, ecart_min, monotone)

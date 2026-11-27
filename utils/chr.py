@@ -158,3 +158,58 @@ def perte_information(df: pl.DataFrame, score: str, target: str, regle: dict) ->
     g_score = 2 * roc_auc_score(y, -df[score].to_numpy()) - 1
     g_chr = 2 * roc_auc_score(y, taux) - 1
     return {"gini_score": float(g_score), "gini_chr": float(g_chr), "perte_points": float(100 * (g_score - g_chr))}
+
+
+# ---------------------------------------------------------------------------
+# Construction par découpage optimal (optbinning) et analyse des « faux bons »
+# ---------------------------------------------------------------------------
+
+def chr_optbinning(df: pl.DataFrame, score: str, target: str, part_min: float = 0.05, defauts_min: int = 20,
+                   max_n_bins: int | None = None, max_n_prebins: int = 30) -> dict:
+    """CHR par découpage optimal (optbinning, programmation par contraintes) : bornes du score qui maximisent
+    l'IV sous contraintes de monotonie (risque décroissant avec le score), d'effectif et de défauts minimaux.
+    Les coupures sont placées au milieu de deux valeurs de score observées (convention ]a ; b] du binning)."""
+    from optbinning import OptimalBinning
+
+    x, y = df[score].to_numpy().astype(float), df[target].to_numpy().astype(int)
+    ob = OptimalBinning(name=score, dtype="numerical", solver="cp", monotonic_trend="descending",
+                        min_bin_size=part_min, min_bin_n_event=defauts_min,
+                        max_n_bins=max_n_bins, max_n_prebins=max_n_prebins)
+    ob.fit(x, y)
+    valeurs = np.unique(x)
+    bornes = []
+    for s in ob.splits:                               # optbinning : [s ; ...[ ; ici : ]... ; borne]
+        i = np.searchsorted(valeurs, s, side="left")
+        bornes.append(float((valeurs[i - 1] + valeurs[i]) / 2) if 0 < i < len(valeurs) else float(s))
+    nom = "optbinning" + (f" max={max_n_bins}" if max_n_bins else "") + (f" défauts≥{defauts_min}" if defauts_min != 20 else "")
+    return {"type": "num", "bornes": sorted(set(bornes)), "missing": None, "methode": nom}
+
+
+def regles_chr_respectees(df: pl.DataFrame, score: str, target: str, date: str, regle: dict,
+                          part_min: float = 0.05, defauts_min: int = 20, ecart_min: float = 0.3) -> bool:
+    """Contrôle des règles de construction (7.1-7.2) : chaque classe a au moins part_min de la population et
+    defauts_min défauts, et deux classes voisines diffèrent d'au moins ecart_min en risque chaque mois."""
+    t = table_chr(df, score, target, regle)
+    stab = stabilite_regle(df, score, target, date, regle)["ecart_min_suivante"].drop_nulls().drop_nans()
+    return bool((t["part_population"] >= part_min).all() and (t["n_defaut"] >= defauts_min).all()
+                and (stab.len() == 0 or stab.min() >= ecart_min))
+
+
+def profil_faux_bons(df: pl.DataFrame, target: str, chr_col: str, classes_bonnes: list[int],
+                     regles: dict[str, dict], dans_modele: list[str]) -> pl.DataFrame:
+    """Défauts classés dans les CHR les moins risquées (« faux bons ») : pour chaque variable, IV calculée
+    au sein de ces CHR (défauts contre sains) et taux de défaut de sa classe la plus risquée. Une variable
+    hors modèle avec une IV élevée signale un risk driver que le score ne capte pas pour ces clients."""
+    from utils.binning import table_regle
+
+    bons = df.filter(pl.col(chr_col).is_in(classes_bonnes))
+    lignes = []
+    for v, r in regles.items():
+        if v not in bons.columns:
+            continue
+        t = table_regle(bons, v, target, r)
+        pire = t.sort("taux_defaut", descending=True).row(0, named=True)
+        lignes.append({"variable": v, "dans_modele": v in dans_modele, "iv_dans_bonnes_chr": float(t["iv"].sum()),
+                       "classe_la_plus_risquee": pire["classe"], "taux_defaut_classe": pire["taux_defaut"],
+                       "part_population_classe": pire["part_population"], "n_defaut_classe": pire["n_defaut"]})
+    return pl.DataFrame(lignes).sort("iv_dans_bonnes_chr", descending=True)
