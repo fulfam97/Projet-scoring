@@ -147,17 +147,28 @@ def stabilite_chr(df: pl.DataFrame, score: str, target: str, date: str, regle: d
 
 
 def perte_information(df: pl.DataFrame, score: str, target: str, regle: dict) -> dict:
-    """Perte d'information de la mise en classes (7.6) : Gini du score continu contre Gini des CHR
+    """Perte d'information de la mise en classes (7.6) : Gini et AUC-PR du score continu contre ceux des CHR
     (chaque client reçoit le taux de défaut de sa classe)."""
-    from sklearn.metrics import roc_auc_score
+    from sklearn.metrics import average_precision_score, roc_auc_score
 
     y = df[target].to_numpy()
     t = table_chr(df, score, target, regle)
     taux = appliquer_regle(df, score, regle)["classe"].replace_strict(
         dict(zip(t["intervalle_score"], t["taux_defaut"])), return_dtype=pl.Float64).to_numpy()
-    g_score = 2 * roc_auc_score(y, -df[score].to_numpy()) - 1
+    s_neg = -df[score].to_numpy()
+    pi = float(y.mean())
+    g_score = 2 * roc_auc_score(y, s_neg) - 1
     g_chr = 2 * roc_auc_score(y, taux) - 1
-    return {"gini_score": float(g_score), "gini_chr": float(g_chr), "perte_points": float(100 * (g_score - g_chr))}
+    pr_score = float(average_precision_score(y, s_neg))
+    pr_chr = float(average_precision_score(y, taux))
+    prn_score = (pr_score - pi) / (1 - pi) if pi < 1 else float("nan")
+    prn_chr = (pr_chr - pi) / (1 - pi) if pi < 1 else float("nan")
+    return {
+        "taux_defaut": pi,
+        "gini_score": float(g_score), "gini_chr": float(g_chr), "perte_points": float(100 * (g_score - g_chr)),
+        "auc_pr_score": pr_score, "auc_pr_chr": pr_chr, "perte_auc_pr_pts": float(100 * (pr_score - pr_chr)),
+        "auc_pr_norm_score": prn_score, "auc_pr_norm_chr": prn_chr,
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -213,3 +224,36 @@ def profil_faux_bons(df: pl.DataFrame, target: str, chr_col: str, classes_bonnes
                        "classe_la_plus_risquee": pire["classe"], "taux_defaut_classe": pire["taux_defaut"],
                        "part_population_classe": pire["part_population"], "n_defaut_classe": pire["n_defaut"]})
     return pl.DataFrame(lignes).sort("iv_dans_bonnes_chr", descending=True)
+
+
+def discrimination_intra_chr(df: pl.DataFrame, target: str, chr_col: str,
+                             scores: dict[str, np.ndarray]) -> pl.DataFrame:
+    """Discrimination résiduelle à l'intérieur de chaque CHR (homogénéité interne, 7.3) :
+    pour chaque classe et chaque score fourni (convention : valeur élevée = risque élevé,
+    donc -score_pdo pour le score PDO, ou probabilité prédite pour logit / XGBoost),
+    calcule effectif, défauts, taux de défaut, AUC-ROC, Gini, AUC-PR et AUC-PR normalisée.
+    Une classe parfaitement homogène vis-à-vis du score présente une AUC proche de 0,50 (Gini ≈ 0)."""
+    from sklearn.metrics import average_precision_score, roc_auc_score
+
+    y_all = df[target].to_numpy().astype(int)
+    c_all = df[chr_col].to_numpy()
+    lignes = []
+    for k in sorted(np.unique(c_all)):
+        masque = c_all == k
+        yk = y_all[masque]
+        n, nd = int(yk.size), int(yk.sum())
+        pi = float(yk.mean()) if n > 0 else float("nan")
+        for nom, s in scores.items():
+            sk = np.asarray(s, dtype=float)[masque]
+            if 0 < nd < n:
+                auc = float(roc_auc_score(yk, sk))
+                ap = float(average_precision_score(yk, sk))
+                apn = (ap - pi) / (1 - pi) if pi < 1 else float("nan")
+                gini = 2 * auc - 1
+            else:
+                auc = gini = ap = apn = float("nan")
+            lignes.append({
+                "chr": int(k), "score": nom, "n": n, "n_defaut": nd, "taux_defaut": pi,
+                "auc_roc": auc, "gini": gini, "auc_pr": ap, "auc_pr_norm": apn,
+            })
+    return pl.DataFrame(lignes).sort(["chr", "score"])

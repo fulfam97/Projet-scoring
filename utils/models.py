@@ -14,14 +14,17 @@ from utils.binning import woe_encode_regles
 # ---------------------------------------------------------------------------
 
 def metriques(y, score, nom: str = "") -> dict:
-    """AUC, Gini (= 2 AUC - 1) et KS (écart maximal entre fonctions de répartition des défauts et des sains)."""
-    from sklearn.metrics import roc_auc_score, roc_curve
+    """AUC-ROC, AUC-PR (brute et normalisée par le taux de défaut), Gini (= 2 AUC - 1) et KS."""
+    from sklearn.metrics import average_precision_score, roc_auc_score, roc_curve
 
     y, score = np.asarray(y, dtype=int), np.asarray(score, dtype=float)
     fpr, tpr, _ = roc_curve(y, score)
+    pi = float(y.mean())
     auc = float(roc_auc_score(y, score))
-    return {"echantillon": nom, "n": int(y.size), "n_defaut": int(y.sum()), "taux_defaut": float(y.mean()),
-            "auc": auc, "gini": 2 * auc - 1, "ks": float(np.max(tpr - fpr))}
+    auc_pr = float(average_precision_score(y, score))
+    auc_pr_norm = (auc_pr - pi) / (1 - pi) if pi < 1 else float("nan")
+    return {"echantillon": nom, "n": int(y.size), "n_defaut": int(y.sum()), "taux_defaut": pi,
+            "auc": auc, "auc_pr": auc_pr, "auc_pr_norm": auc_pr_norm, "gini": 2 * auc - 1, "ks": float(np.max(tpr - fpr))}
 
 
 # ---------------------------------------------------------------------------
@@ -363,42 +366,64 @@ def optimiser_xgb(X: np.ndarray, y, groupes, n_essais: int = 30, n_plis: int = 5
 
 def gini_bootstrap(y, scores: dict[str, np.ndarray], groupes, reference: str | None = None, n_tirages: int = 1000,
                    niveau: float = 0.95, seed: int = 0) -> tuple[pl.DataFrame, pl.DataFrame]:
-    """Intervalles de confiance des Gini par bootstrap **par client** (on tire les clients avec remise,
+    """Intervalles de confiance du Gini et de l'AUC-PR par bootstrap **par client** (on tire les clients avec remise,
     toutes les lignes d'un client tiré sont reprises). Renvoie :
-    - le Gini de chaque modèle et son intervalle de confiance ;
-    - l'écart de Gini de chaque modèle avec le modèle de référence et son intervalle : si l'intervalle
+    - le Gini et l'AUC-PR de chaque modèle avec leurs intervalles de confiance ;
+    - les écarts de chaque modèle avec le modèle de référence et leurs intervalles : si l'intervalle
       ne contient pas 0, la différence est significative.
     Implémentation par pondération : chaque ligne reçoit le nombre de fois où son client a été tiré."""
-    from sklearn.metrics import roc_auc_score
+    from sklearn.metrics import average_precision_score, roc_auc_score
 
     y = np.asarray(y)
+    pi = float(y.mean())
     _, idx_client = np.unique(np.asarray(groupes), return_inverse=True)
     n_clients = idx_client.max() + 1
     rng = np.random.default_rng(seed)
     noms = list(scores)
-    tirages = np.empty((n_tirages, len(noms)))
+    tirages_g = np.empty((n_tirages, len(noms)))
+    tirages_pr = np.empty((n_tirages, len(noms)))
+    tirages_prn = np.empty((n_tirages, len(noms)))
     for b in range(n_tirages):
         poids = np.bincount(rng.integers(0, n_clients, n_clients), minlength=n_clients)[idx_client]
+        pi_b = float(np.average(y, weights=poids))
         for j, nom in enumerate(noms):
-            tirages[b, j] = 2 * roc_auc_score(y, scores[nom], sample_weight=poids) - 1
+            tirages_g[b, j] = 2 * roc_auc_score(y, scores[nom], sample_weight=poids) - 1
+            pr_b = average_precision_score(y, scores[nom], sample_weight=poids)
+            tirages_pr[b, j] = pr_b
+            tirages_prn[b, j] = (pr_b - pi_b) / (1 - pi_b) if pi_b < 1 else np.nan
     a = (1 - niveau) / 2
+    auc_prs = [float(average_precision_score(y, scores[n])) for n in noms]
     gini = pl.DataFrame({
         "modele": noms,
+        "taux_defaut": [pi] * len(noms),
         "gini": [2 * roc_auc_score(y, scores[n]) - 1 for n in noms],
-        "ic_bas": np.quantile(tirages, a, axis=0), "ic_haut": np.quantile(tirages, 1 - a, axis=0),
+        "ic_bas": np.quantile(tirages_g, a, axis=0), "ic_haut": np.quantile(tirages_g, 1 - a, axis=0),
+        "auc_pr": auc_prs,
+        "auc_pr_ic_bas": np.quantile(tirages_pr, a, axis=0), "auc_pr_ic_haut": np.quantile(tirages_pr, 1 - a, axis=0),
+        "auc_pr_norm": [(pr - pi) / (1 - pi) if pi < 1 else float("nan") for pr in auc_prs],
+        "auc_pr_norm_ic_bas": np.quantile(tirages_prn, a, axis=0), "auc_pr_norm_ic_haut": np.quantile(tirages_prn, 1 - a, axis=0),
     })
     reference = reference or noms[-1]
     r = noms.index(reference)
     ecarts = pl.DataFrame([
-        {"modele": n, "reference": reference, "ecart_gini": float(gini["gini"][j] - gini["gini"][r]),
-         "ic_bas": float(np.quantile(tirages[:, j] - tirages[:, r], a)),
-         "ic_haut": float(np.quantile(tirages[:, j] - tirages[:, r], 1 - a))}
+        {
+            "modele": n, "reference": reference,
+            "ecart_gini": float(gini["gini"][j] - gini["gini"][r]),
+            "ic_bas": float(np.quantile(tirages_g[:, j] - tirages_g[:, r], a)),
+            "ic_haut": float(np.quantile(tirages_g[:, j] - tirages_g[:, r], 1 - a)),
+            "ecart_auc_pr": float(gini["auc_pr"][j] - gini["auc_pr"][r]),
+            "auc_pr_ic_bas": float(np.quantile(tirages_pr[:, j] - tirages_pr[:, r], a)),
+            "auc_pr_ic_haut": float(np.quantile(tirages_pr[:, j] - tirages_pr[:, r], 1 - a)),
+        }
         for j, n in enumerate(noms) if j != r
-    ]).with_columns(significatif=(pl.col("ic_bas") > 0) | (pl.col("ic_haut") < 0))
+    ]).with_columns(
+        significatif=(pl.col("ic_bas") > 0) | (pl.col("ic_haut") < 0),
+        significatif_auc_pr=(pl.col("auc_pr_ic_bas") > 0) | (pl.col("auc_pr_ic_haut") < 0),
+    )
     return gini, ecarts
 
 
-def courbes_roc(y, scores: dict[str, np.ndarray], ax=None):
+def courbes_roc(y, scores: dict[str, np.ndarray], titre: str = "Courbes ROC — échantillon de test", ax=None):
     """Courbes ROC superposées (taux de défauts détectés en fonction du taux de sains écartés), avec le Gini
     de chaque modèle en légende."""
     import matplotlib.pyplot as plt
@@ -411,8 +436,29 @@ def courbes_roc(y, scores: dict[str, np.ndarray], ax=None):
         ax.plot(fpr, tpr, label=f"{nom} (Gini = {2 * roc_auc_score(y, s) - 1:.3f})")
     ax.plot([0, 1], [0, 1], linestyle="--", color="grey", label="hasard")
     ax.set(xlabel="taux de faux positifs (sains classés risqués)", ylabel="taux de vrais positifs (défauts détectés)",
-           title="Courbes ROC — échantillon de test")
+           title=titre)
     ax.legend(loc="lower right", fontsize=8)
+    return ax
+
+
+def courbes_pr(y, scores: dict[str, np.ndarray], titre: str = "Courbes Précision-Rappel", ax=None):
+    """Courbes Précision-Rappel superposées, avec l'AUC-PR en légende et le taux de défaut en référence."""
+    import matplotlib.pyplot as plt
+    from sklearn.metrics import average_precision_score, precision_recall_curve
+
+    y = np.asarray(y, dtype=int)
+    if ax is None:
+        _, ax = plt.subplots(figsize=(6, 6))
+    base = float(y.mean())
+    for nom, s in scores.items():
+        prec, rec, _ = precision_recall_curve(y, s)
+        ap = float(average_precision_score(y, s))
+        ap_norm = (ap - base) / (1 - base) if base < 1 else float("nan")
+        ax.plot(rec, prec, label=f"{nom} (AUC-PR = {ap:.3f} | norm. = {ap_norm:.3f})")
+    ax.axhline(base, linestyle="--", color="grey", label=f"hasard / taux défaut ({base:.2%})")
+    ax.set(xlabel="rappel (part des défauts captés)", ylabel="précision (taux de défaut parmi les alertés)",
+           title=titre)
+    ax.legend(loc="upper right", fontsize=8)
     return ax
 
 
@@ -967,3 +1013,57 @@ def graphique_dependance(df: pl.DataFrame, var: str, shap_var: np.ndarray, regle
     ax.axhline(0, color="black", linewidth=0.5)
     ax.set(title=var, xlabel=f"{var} (médiane de chaque tranche)", ylabel="effet sur le log-odds")
     return ax
+
+
+# ---------------------------------------------------------------------------
+# Perte d'information par simplification et courbe de parcimonie (5.4, 7.6)
+# ---------------------------------------------------------------------------
+
+def cascade_simplification(y, etapes: list[tuple[str, np.ndarray]]) -> pl.DataFrame:
+    """Décompose la perte d'information le long d'une suite ordonnée de modèles / représentations
+    du plus riche (étape 0) au plus simple (dernière étape).
+    `etapes` : liste de couples (nom_etape, score_risque) où valeur élevée = risque élevé.
+    Renvoie AUC-ROC, Gini, AUC-PR (brute et normalisée), KS, la perte incrémentale (vs étape précédente)
+    et la perte cumulée (vs étape 0), en points."""
+    lignes = []
+    for i, (nom, s) in enumerate(etapes):
+        m = metriques(y, s, nom)
+        lignes.append({
+            "etape": i, "modele": nom, "taux_defaut": m["taux_defaut"],
+            "auc": m["auc"], "gini": m["gini"], "auc_pr": m["auc_pr"],
+            "auc_pr_norm": m["auc_pr_norm"], "ks": m["ks"],
+        })
+    t = pl.DataFrame(lignes)
+    g0, pr0, prn0 = t["gini"][0], t["auc_pr"][0], t["auc_pr_norm"][0]
+    return t.with_columns(
+        delta_gini_pts=100.0 * (pl.col("gini") - pl.col("gini").shift(1)),
+        perte_cum_gini_pts=100.0 * (pl.col("gini") - g0),
+        delta_auc_pr_pts=100.0 * (pl.col("auc_pr") - pl.col("auc_pr").shift(1)),
+        perte_cum_auc_pr_pts=100.0 * (pl.col("auc_pr") - pr0),
+        delta_auc_pr_norm_pts=100.0 * (pl.col("auc_pr_norm") - pl.col("auc_pr_norm").shift(1)),
+        perte_cum_auc_pr_norm_pts=100.0 * (pl.col("auc_pr_norm") - prn0),
+    )
+
+
+def courbe_parcimonie(train: pl.DataFrame, test: pl.DataFrame, variables: list[str],
+                      regles: dict[str, dict], target: str, id_col: str) -> pl.DataFrame:
+    """Performance marginale de la régression logistique en ajoutant les variables une par une
+    (de 1 à len(variables), dans l'ordre fourni). Mesure Gini, AUC-PR (brute et normalisée) et KS
+    sur train et test à chaque taille de modèle."""
+    lignes = []
+    for k in range(1, len(variables) + 1):
+        vs = variables[:k]
+        f = logit_final(train, test, vs, regles, target, id_col)
+        m_tr = metriques(train[target], predire(f["res"], f["X_train"]))
+        m_te = metriques(test[target], predire(f["res"], f["X_test"]))
+        lignes.append({
+            "nb_variables": k, "variable_ajoutee": vs[-1], "nb_indicatrices": len(f["noms"]),
+            "gini_train": m_tr["gini"], "gini_test": m_te["gini"],
+            "auc_pr_test": m_te["auc_pr"], "auc_pr_norm_test": m_te["auc_pr_norm"],
+            "ks_test": m_te["ks"],
+        })
+    t = pl.DataFrame(lignes)
+    return t.with_columns(
+        gain_gini_test_pts=100.0 * (pl.col("gini_test") - pl.col("gini_test").shift(1)),
+        gain_auc_pr_test_pts=100.0 * (pl.col("auc_pr_test") - pl.col("auc_pr_test").shift(1)),
+    )

@@ -206,8 +206,8 @@ def csi_variables(ref: pl.DataFrame, oot: pl.DataFrame, regles_modele: dict[str,
 def backtest_discrimination(echantillons: dict[str, pl.DataFrame], target: str,
                             score_col: str = "score", chr_col: str = "chr",
                             id_col: str | None = None, n_bootstrap: int = 1000) -> pl.DataFrame:
-    """Compare AUC, Gini (score continu et CHR), perte de Gini et KS entre échantillons (train / test / OOT).
-    Si `id_col` est fourni, calcule aussi l'IC à 95 % par bootstrap par client sur le Gini du score."""
+    """Compare AUC-ROC, AUC-PR, Gini (score continu et CHR), pertes de discrimination et KS entre échantillons
+    (train / test / OOT). Si `id_col` est fourni, calcule aussi les IC à 95 % par bootstrap par client."""
     lignes = []
     for nom, df in echantillons.items():
         y = df[target].to_numpy()
@@ -215,8 +215,11 @@ def backtest_discrimination(echantillons: dict[str, pl.DataFrame], target: str,
         m_chr = models.metriques(y, df[chr_col].to_numpy(), nom)
         ligne = {
             "echantillon": nom, "n": df.height, "n_defaut": int(y.sum()), "taux_defaut": float(y.mean()),
-            "auc_score": m_score["auc"], "gini_score": m_score["gini"], "ks_score": m_score["ks"],
+            "auc_score": m_score["auc"], "auc_pr_score": m_score["auc_pr"], "auc_pr_norm_score": m_score["auc_pr_norm"],
+            "gini_score": m_score["gini"], "ks_score": m_score["ks"],
             "gini_chr": m_chr["gini"], "perte_gini_pts": 100.0 * (m_score["gini"] - m_chr["gini"]),
+            "auc_pr_chr": m_chr["auc_pr"], "auc_pr_norm_chr": m_chr["auc_pr_norm"],
+            "perte_auc_pr_pts": 100.0 * (m_score["auc_pr"] - m_chr["auc_pr"]),
         }
         if id_col is not None:
             ic, _ = models.gini_bootstrap(
@@ -226,24 +229,32 @@ def backtest_discrimination(echantillons: dict[str, pl.DataFrame], target: str,
             row_score = ic.filter(pl.col("modele") == "score").row(0, named=True)
             ligne["gini_ic_bas"] = float(row_score["ic_bas"])
             ligne["gini_ic_haut"] = float(row_score["ic_haut"])
+            ligne["auc_pr_ic_bas"] = float(row_score["auc_pr_ic_bas"])
+            ligne["auc_pr_ic_haut"] = float(row_score["auc_pr_ic_haut"])
+            ligne["auc_pr_norm_ic_bas"] = float(row_score["auc_pr_norm_ic_bas"])
+            ligne["auc_pr_norm_ic_haut"] = float(row_score["auc_pr_norm_ic_haut"])
         lignes.append(ligne)
     return pl.DataFrame(lignes)
 
 
 def discrimination_mensuelle(df: pl.DataFrame, target: str, date: str,
                              score_col: str = "score", chr_col: str = "chr") -> pl.DataFrame:
-    """Suivi mensuel sur l'OOT : effectif, défauts, taux de défaut, Gini score, Gini CHR et KS."""
+    """Suivi mensuel sur l'OOT : effectif, défauts, taux de défaut, AUC-PR (brute & normalisée), Gini (score et CHR) et KS."""
     lignes = []
     for d in df[date].unique().sort().to_list():
         sub = df.filter(pl.col(date) == d)
         y = sub[target].to_numpy()
         if y.sum() == 0 or y.sum() == sub.height:
             lignes.append({date: d, "n": sub.height, "n_defaut": int(y.sum()), "taux_defaut": float(y.mean()),
+                           "auc_pr_score": float("nan"), "auc_pr_norm_score": float("nan"),
+                           "auc_pr_chr": float("nan"), "auc_pr_norm_chr": float("nan"),
                            "gini_score": float("nan"), "gini_chr": float("nan"), "ks_score": float("nan")})
             continue
         m_s = models.metriques(y, -sub[score_col].to_numpy())
         m_c = models.metriques(y, sub[chr_col].to_numpy())
         lignes.append({date: d, "n": sub.height, "n_defaut": int(y.sum()), "taux_defaut": float(y.mean()),
+                       "auc_pr_score": m_s["auc_pr"], "auc_pr_norm_score": m_s["auc_pr_norm"],
+                       "auc_pr_chr": m_c["auc_pr"], "auc_pr_norm_chr": m_c["auc_pr_norm"],
                        "gini_score": m_s["gini"], "gini_chr": m_c["gini"], "ks_score": m_s["ks"]})
     return pl.DataFrame(lignes)
 
