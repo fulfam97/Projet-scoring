@@ -1,0 +1,14 @@
+polars
+pandas
+pyarrow
+numpy
+scipy
+statsmodels
+scikit-learn
+xlsxwriter
+ipykernel
+matplotlib
+xgboost
+fastexceloptbinning
+lightgbm
+catboost

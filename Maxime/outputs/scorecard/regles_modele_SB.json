@@ -1,0 +1,101 @@
+{
+  "horsbilan": {
+    "type": "num",
+    "bornes": [
+      0.0
+    ],
+    "missing": "]-inf ; 0]",
+    "methode": "quantiles + regroupement"
+  },
+  "solde_crediteur": {
+    "type": "num",
+    "bornes": [
+      0.0,
+      1600.0,
+      5500.0
+    ],
+    "missing": "]-inf ; 0]",
+    "methode": "quantiles + regroupement"
+  },
+  "CRTAE_AG_SLDEPA": {
+    "type": "num",
+    "bornes": [
+      5000.0,
+      55000.0,
+      160000.0
+    ],
+    "missing": "]-inf ; 5000]",
+    "methode": "xgb"
+  },
+  "ARR_TENDANCE": {
+    "type": "quali",
+    "groupes": {
+      "ancien_seul": "G2",
+      "aucun": "G1",
+      "recent_seul": "G3",
+      "recurrent": "G3"
+    },
+    "ordre": [
+      "G1",
+      "G2",
+      "G3"
+    ],
+    "missing": "G2",
+    "methode": "modalites"
+  },
+  "anciennete_jour_sain_M0": {
+    "type": "num",
+    "bornes": [
+      530.0,
+      1500.0,
+      3800.0
+    ],
+    "missing": "]-inf ; 530]",
+    "methode": "arbre"
+  },
+  "RATIO_ECR": {
+    "type": "num",
+    "bornes": [
+      0.99
+    ],
+    "missing": "]-inf ; 0.99]",
+    "methode": "xgb + regroupement"
+  },
+  "CODITDBDF_PAR": {
+    "type": "quali",
+    "groupes": {
+      "0000": "G1",
+      "0002": "G2"
+    },
+    "ordre": [
+      "G1",
+      "G2"
+    ],
+    "missing": "G2",
+    "methode": "modalites"
+  },
+  "ARR_GDT": {
+    "type": "num",
+    "bornes": [
+      68.0
+    ],
+    "missing": "]68 ; +inf]",
+    "methode": " + regroupement"
+  },
+  "bilan": {
+    "type": "num",
+    "bornes": [
+      0.0
+    ],
+    "missing": "]0 ; +inf]"
+  },
+  "TX_UTIL_DAV": {
+    "type": "num",
+    "bornes": [
+      3.7,
+      19.0
+    ],
+    "missing": "]19 ; +inf]",
+    "methode": " + regroupement"
+  }
+}

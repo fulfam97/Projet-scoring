@@ -1,0 +1,13 @@
+{
+  "chr": {
+    "type": "num",
+    "bornes": [
+      571.5,
+      607.5,
+      634.5,
+      653.5
+    ],
+    "missing": null,
+    "methode": "jenks + regroupement"
+  }
+}

@@ -1,0 +1,417 @@
+{
+  "solde_crediteur": {
+    "type": "num",
+    "bornes": [
+      0.0,
+      1600.0,
+      5500.0,
+      30000.0
+    ],
+    "missing": null,
+    "methode": "quantiles"
+  },
+  "horsbilan": {
+    "type": "num",
+    "bornes": [
+      0.0,
+      197.75
+    ],
+    "missing": null,
+    "methode": "quantiles"
+  },
+  "MINSOLDE_PAR": {
+    "type": "num",
+    "bornes": [
+      2700.0,
+      37000.0
+    ],
+    "missing": null,
+    "methode": "arbre"
+  },
+  "ARR_GDT": {
+    "type": "num",
+    "bornes": [
+      3.0
+    ],
+    "missing": null,
+    "methode": "arbre"
+  },
+  "bilan": {
+    "type": "num",
+    "bornes": [
+      0.0
+    ],
+    "missing": null,
+    "methode": "quantiles"
+  },
+  "CRTAD_AG_NBJDE_BB": {
+    "type": "num",
+    "bornes": [
+      4.0,
+      21.0,
+      77.0
+    ],
+    "missing": null,
+    "methode": "xgb"
+  },
+  "CRTAE_AG_SLDEPA": {
+    "type": "num",
+    "bornes": [
+      5000.0,
+      55000.0,
+      160000.0
+    ],
+    "missing": null,
+    "methode": "xgb"
+  },
+  "RATIO_SOLDE_MOYEN_SUR_EPARGNE": {
+    "type": "num",
+    "bornes": [
+      -0.54
+    ],
+    "missing": null,
+    "methode": "xgb"
+  },
+  "RATIO_NBJDEB_NONAUTO_SUR_NBJDEB": {
+    "type": "num",
+    "bornes": [],
+    "missing": null,
+    "methode": "quantiles"
+  },
+  "solde_debiteur": {
+    "type": "num",
+    "bornes": [
+      -1500.0,
+      -11.0
+    ],
+    "missing": null,
+    "methode": "xgb"
+  },
+  "NBJ_ARR_SS": {
+    "type": "num",
+    "bornes": [
+      0.0
+    ],
+    "missing": null,
+    "methode": "quantiles"
+  },
+  "CRTAD_AG_MVTAFF_IND_0010": {
+    "type": "num",
+    "bornes": [
+      4300.0,
+      100000.0,
+      170000.0
+    ],
+    "missing": null,
+    "methode": "xgb"
+  },
+  "SOLDE_EVOLUTION_T_vs_T4": {
+    "type": "num",
+    "bornes": [
+      -1.2,
+      -0.88
+    ],
+    "missing": "]-1.2 ; -0.88]",
+    "methode": "quantiles"
+  },
+  "anciennete_jour_sain_M0": {
+    "type": "num",
+    "bornes": [
+      530.0,
+      1500.0,
+      3800.0
+    ],
+    "missing": null,
+    "methode": "arbre"
+  },
+  "NBJDE_RATIO_A_vs_A1": {
+    "type": "num",
+    "bornes": [
+      0.076,
+      0.76
+    ],
+    "missing": null,
+    "methode": "arbre"
+  },
+  "RATIO_ECR": {
+    "type": "num",
+    "bornes": [
+      0.5,
+      0.99
+    ],
+    "missing": "]0.5 ; 0.99]",
+    "methode": "xgb"
+  },
+  "CRTAD_IND_0042": {
+    "type": "num",
+    "bornes": [
+      8.5,
+      28.0
+    ],
+    "missing": null,
+    "methode": "arbre"
+  },
+  "SOLDE_RATIO_T_vs_HIST": {
+    "type": "num",
+    "bornes": [
+      0.048
+    ],
+    "missing": "]-inf ; 0.048]",
+    "methode": "arbre"
+  },
+  "PART_EPARGNE_DANS_AVOIRS": {
+    "type": "num",
+    "bornes": [
+      0.9956915080547333
+    ],
+    "missing": null,
+    "methode": "arbre"
+  },
+  "CRTAD_AG_NBJDE_BC": {
+    "type": "num",
+    "bornes": [
+      10.0,
+      64.0
+    ],
+    "missing": null,
+    "methode": "arbre"
+  },
+  "ANCIENNETE_modif": {
+    "type": "num",
+    "bornes": [
+      39.0,
+      160.0,
+      390.0
+    ],
+    "missing": null,
+    "methode": "xgb"
+  },
+  "RATIO_LITIGES_vs_AVOIRS": {
+    "type": "num",
+    "bornes": [],
+    "missing": null,
+    "methode": "quantiles"
+  },
+  "RATIO_MOUV_AFF_SUR_EPARGNE": {
+    "type": "num",
+    "bornes": [],
+    "missing": null,
+    "methode": "quantiles"
+  },
+  "SOLDE_VOLATILITE_5T": {
+    "type": "num",
+    "bornes": [
+      9100.0,
+      31000.0,
+      220000.0
+    ],
+    "missing": null,
+    "methode": "arbre"
+  },
+  "SOLDE_PENTE_5T": {
+    "type": "num",
+    "bornes": [
+      4000.0,
+      36000.0
+    ],
+    "missing": null,
+    "methode": "quantiles"
+  },
+  "SOLDE_PENTE_4T": {
+    "type": "num",
+    "bornes": [
+      5900.0,
+      33000.0
+    ],
+    "missing": null,
+    "methode": "arbre"
+  },
+  "SOLDE_PENTE_3T": {
+    "type": "num",
+    "bornes": [
+      23000.0
+    ],
+    "missing": null,
+    "methode": "arbre"
+  },
+  "SOLDE_EVOLUTION_T_vs_T1": {
+    "type": "num",
+    "bornes": [
+      -1.0,
+      -0.53
+    ],
+    "missing": "]-inf ; -1]",
+    "methode": "quantiles"
+  },
+  "CRTAD_AG_NBECR_B": {
+    "type": "num",
+    "bornes": [
+      13.0,
+      43.0
+    ],
+    "missing": null,
+    "methode": "quantiles"
+  },
+  "engagement": {
+    "type": "num",
+    "bornes": [
+      199.91,
+      38035.59
+    ],
+    "missing": null,
+    "methode": "xgb"
+  },
+  "CAUSE_SAIN_M0": {
+    "type": "quali",
+    "groupes": {
+      "eer": "G1",
+      "exception": "G2",
+      "fin de contagion": "G2",
+      "retour en sain": "G2"
+    },
+    "ordre": [
+      "G1",
+      "G2"
+    ],
+    "missing": null,
+    "methode": "modalites"
+  },
+  "engagement_DAV": {
+    "type": "num",
+    "bornes": [
+      199.91
+    ],
+    "missing": null,
+    "methode": "xgb"
+  },
+  "CODITDBDF_PAR": {
+    "type": "quali",
+    "groupes": {
+      "0000": "G1",
+      "0002": "G2"
+    },
+    "ordre": [
+      "G1",
+      "G2"
+    ],
+    "missing": null,
+    "methode": "modalites"
+  },
+  "CRTPI_IND_0036": {
+    "type": "num",
+    "bornes": [
+      480000.0
+    ],
+    "missing": null,
+    "methode": "arbre"
+  },
+  "AGE_PP_EN_MOIS": {
+    "type": "num",
+    "bornes": [
+      470.0,
+      820.0
+    ],
+    "missing": "]820 ; +inf]",
+    "methode": "quantiles"
+  },
+  "engagement_immo": {
+    "type": "num",
+    "bornes": [
+      4700.0
+    ],
+    "missing": null,
+    "methode": "arbre"
+  },
+  "nb_CB_diff": {
+    "type": "num",
+    "bornes": [
+      0.0
+    ],
+    "missing": null,
+    "methode": "modalites"
+  },
+  "CRTAD_IND_0205": {
+    "type": "num",
+    "bornes": [
+      9200.0
+    ],
+    "missing": null,
+    "methode": "arbre"
+  },
+  "nb_credit_perso": {
+    "type": "num",
+    "bornes": [],
+    "missing": null,
+    "methode": "modalites"
+  },
+  "cod_axe_unite_min": {
+    "type": "num",
+    "bornes": [],
+    "missing": null,
+    "methode": "modalites"
+  },
+  "Dfo_max_Mm4_Mm36": {
+    "type": "num",
+    "bornes": [
+      0.0
+    ],
+    "missing": "]-inf ; 0]",
+    "methode": "modalites"
+  },
+  "NB_FENETRES_ARR": {
+    "type": "num",
+    "bornes": [
+      0.0,
+      1.0,
+      5.0
+    ],
+    "missing": "]0 ; 1]",
+    "methode": "modalites"
+  },
+  "NBJ_ARR_MAX_12M": {
+    "type": "num",
+    "bornes": [
+      1.5,
+      14.0,
+      24.0
+    ],
+    "missing": "]1.5 ; 14]",
+    "methode": "arbre"
+  },
+  "NBJ_ARR_MAX_13_48M": {
+    "type": "num",
+    "bornes": [
+      4.5,
+      24.5,
+      106.5
+    ],
+    "missing": null,
+    "methode": "arbre"
+  },
+  "ARR_TENDANCE": {
+    "type": "quali",
+    "groupes": {
+      "ancien_seul": "G2",
+      "aucun": "G1",
+      "recent_seul": "G3",
+      "recurrent": "G3"
+    },
+    "ordre": [
+      "G1",
+      "G2",
+      "G3"
+    ],
+    "missing": "G2",
+    "methode": "modalites"
+  },
+  "TX_UTIL_DAV": {
+    "type": "num",
+    "bornes": [
+      1.0,
+      3.7,
+      19.0
+    ],
+    "missing": null,
+    "methode": "arbre"
+  }
+}
